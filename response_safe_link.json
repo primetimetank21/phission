@@ -1,0 +1,30 @@
+{
+    "message": "Success.",
+    "success": true,
+    "unsafe": false,
+    "domain": "vamoaestudiarmedicina.blogspot.com",
+    "ip_address": "142.251.45.225",
+    "server": "GSE",
+    "content_type": "text/html; charset=UTF-8",
+    "status_code": 200,
+    "page_size": 32546,
+    "domain_rank": 44,
+    "dns_valid": true,
+    "parking": false,
+    "spamming": false,
+    "malware": false,
+    "phishing": false,
+    "suspicious": false,
+    "adult": false,
+    "risk_score": 0,
+    "country_code": "US",
+    "category": "Forum",
+    "domain_age": {
+        "human": "23 years ago",
+        "timestamp": 965079538,
+        "iso": "2000-07-31T17:38:58-04:00"
+    },
+    "redirected": false,
+    "language_code": "N/A",
+    "request_id": "BhjYlk0PYY"
+}

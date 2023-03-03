@@ -1,0 +1,28 @@
+{
+    "message": "Success.",
+    "success": true,
+    "unsafe": false,
+    "domain": "goalgoof.com",
+    "server": "N/A",
+    "content_type": "",
+    "status_code": 0,
+    "page_size": 0,
+    "domain_rank": 0,
+    "dns_valid": false,
+    "parking": false,
+    "spamming": false,
+    "malware": false,
+    "phishing": false,
+    "suspicious": true,
+    "adult": false,
+    "risk_score": 92,
+    "category": "N/A",
+    "domain_age": {
+        "human": "2 years ago",
+        "timestamp": 1611766857,
+        "iso": "2021-01-27T12:00:57-05:00"
+    },
+    "redirected": false,
+    "language_code": "N/A",
+    "request_id": "BhnkDidG6b"
+}
