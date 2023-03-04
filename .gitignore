@@ -131,3 +131,5 @@ dmypy.json
 # Private JSON files
 credentials.json
 token.json
+example_email*.json
+response.json
