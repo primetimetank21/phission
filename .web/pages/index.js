@@ -45,14 +45,14 @@ return (
 sx={{"fontSize": "2em"}}><Alert status="error"><AlertIcon/>
 <AlertTitle>{(((("\"" + state.url) + "\" is a risky website! (score: ") + state.risk_score) + ")")}</AlertTitle></Alert>
 <Heading sx={{"fontSize": "2em"}}>{`Welcome to Phissi👁️n!`}</Heading>
-<Input placeholder="Url to test (i.e., google.com)"
-type="text"
+<Input type="text"
+placeholder="Url to test (i.e., google.com)"
 onBlur={(_e) => Event([E("state.set_search_text", {value:_e.target.value})])}/>
 <Button colorScheme="green">{`Go Phish`}</Button></VStack>
 <NextHead><title>{`Pynecone App`}</title>
 <meta content="A Pynecone app."
 name="description"/>
-<meta content="favicon.ico"
-property="og:image"/></NextHead></Center>
+<meta property="og:image"
+content="favicon.ico"/></NextHead></Center>
 )
 }

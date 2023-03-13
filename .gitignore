@@ -133,3 +133,4 @@ credentials.json
 token.json
 example_email*.json
 response.json
+email*.json
