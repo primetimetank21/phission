@@ -2,12 +2,13 @@ import {useEffect, useRef, useState} from "react"
 import {useRouter} from "next/router"
 import {E, connect, updateState} from "/utils/state"
 import "focus-visible/dist/focus-visible"
-import {Alert, AlertIcon, AlertTitle, Button, Center, Heading, Input, VStack, useColorMode} from "@chakra-ui/react"
+import {Alert, AlertTitle, Button, Center, Container, Heading, Input, Text, VStack, useColorMode} from "@chakra-ui/react"
+import {CheckCircleIcon, QuestionIcon, WarningTwoIcon} from "@chakra-ui/icons"
 import NextHead from "next/head"
 
 const EVENT = "ws://localhost:8000/event"
 export default function Component() {
-const [state, setState] = useState({"risk_score": 92, "search_text": "", "url": "goalgoof.com", "events": [{"name": "state.hydrate"}]})
+const [state, setState] = useState({"display_score": false, "get_risk_str": "somewhat safe", "ipqs": {}, "risk_score": null, "url": "", "url_display": "", "events": [{"name": "state.hydrate"}]})
 const [result, setResult] = useState({"state": null, "events": [], "processing": false})
 const router = useRouter()
 const socket = useRef(null)
@@ -41,14 +42,22 @@ useEffect(() => {
   update()
 })
 return (
-<Center sx={{"paddingTop": "10%"}}><VStack spacing="1.5em"
-sx={{"fontSize": "2em"}}><Alert status="error"><AlertIcon/>
-<AlertTitle>{(((("\"" + state.url) + "\" is a risky website! (score: ") + state.risk_score) + ")")}</AlertTitle></Alert>
-<Heading sx={{"fontSize": "2em"}}>{`Welcome to Phissi👁️n!`}</Heading>
-<Input type="text"
+<Center sx={{"height": "100vh", "width": "auto", "bg": "#0051a8"}}><VStack spacing="1.5em"
+sx={{"fontSize": "2em"}}><Heading sx={{"fontSize": "2em"}}>{`Welcome to Phissi👁️n!`}</Heading>
+{state.display_score ? (state.risk_score >= 75) ? (state.risk_score >= 85) ? <Alert status="error"
+sx={{"bg": "#0051a8"}}><WarningTwoIcon/>
+<AlertTitle sx={{"color": "white"}}>{(((((("\"" + state.url_display) + "\" is a ") + state.get_risk_str) + " website! (score: ") + state.risk_score) + ")")}</AlertTitle></Alert> : <Alert status="error"
+sx={{"bg": "#0051a8"}}><QuestionIcon/>
+<AlertTitle sx={{"color": "white"}}>{(((((("\"" + state.url_display) + "\" is a ") + state.get_risk_str) + " website! (score: ") + state.risk_score) + ")")}</AlertTitle></Alert> : <Alert status="error"
+sx={{"bg": "#0051a8"}}><CheckCircleIcon/>
+<AlertTitle sx={{"color": "white"}}>{(((((("\"" + state.url_display) + "\" is a ") + state.get_risk_str) + " website! (score: ") + state.risk_score) + ")")}</AlertTitle></Alert> : <Text sx={{"color": "white"}}>{`Type a URL`}</Text>}
+<Container sx={{"borderBottom": "0.5px solid grey", "height": "45px"}}><Input focusBorderColor="None"
 placeholder="Url to test (i.e., google.com)"
-onBlur={(_e) => Event([E("state.set_search_text", {value:_e.target.value})])}/>
-<Button colorScheme="green">{`Go Phish`}</Button></VStack>
+type="text"
+onBlur={(_e) => Event([E("state.set_url", {value:_e.target.value})])}
+sx={{"border": "0px", "focusBorderColor": "None", "color": "white", "fontWeight": "semibold"}}/></Container>
+<Button colorScheme="green"
+onClick={() => Event([E("state.set_IPQS", {})])}>{`Go Phish`}</Button></VStack>
 <NextHead><title>{`Pynecone App`}</title>
 <meta content="A Pynecone app."
 name="description"/>
