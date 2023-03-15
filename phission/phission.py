@@ -1,6 +1,8 @@
 # type: ignore
 # pylint: disable=no-member, fixme
 
+# TODO: connect Gmail API
+
 import pynecone as pc
 from phishing_lib import get_IPQS
 from .styles import app_style, input_style, container_style

@@ -33,3 +33,16 @@ Attacks.
 more informed decisions before entering sensitive information.
 1. Increase overall awareness of Cyber Attacks.
 1. Reduce the number of successful Cyber Attacks (primarily phishing attacks).
+
+## HOW TO USE
+### INSTALLATION
+1. Clone this repository
+    - ```git clone git@github.com:primetimetank21/phission.git```
+1. Navigate to the cloned repository directory and create a virtual environment
+    - `cd phission`
+    - `python3 -m venv .venv`
+1. Activate the environment and install the requirements
+    - `source .venv/bin/activate`
+    - `make install`
+1. Start the [Pynecone](https://pynecone.io/) server
+    - `pc run`
