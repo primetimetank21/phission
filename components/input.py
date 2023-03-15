@@ -3,6 +3,7 @@
 import pynecone as pc
 from .styles import input_style, container_style
 
+
 def input_component(State) -> pc.Component:
     return pc.container(
         pc.input(

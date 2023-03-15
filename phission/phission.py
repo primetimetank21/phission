@@ -8,6 +8,7 @@ from phishing_lib import get_IPQS
 from .styles import app_style
 from components import button_component, score_display_component, input_component
 
+
 # State
 class State(pc.State):
     """The app state."""

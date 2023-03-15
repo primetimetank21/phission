@@ -4,4 +4,3 @@ app_style = {
     "width": "auto",
     "bg": "#0051a8",
 }
-
