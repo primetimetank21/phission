@@ -17,8 +17,11 @@ class State(pc.State):
     risk_score: int = None
 
     # TODO: extract more values from this in set_IPQS
+    # TODO: add types to user output (i.e., phishing=True, malware=False, is_suspicious=True, etc.)
+    # Dr. Washington TODOs:
+    #   [] add more exaggerated content (i.e., tts for warnings/danger, green/yellow/red for score, flashing for warnings/danger, etc.)
+    #   [] add more context (i.e., "About" landing page, "Help me" guide, simple explanation of score and purpose, etc.)
     ipqs: dict = {}
-    # is_suspicious: bool
 
     @pc.var
     def display_score(self):
@@ -45,6 +48,9 @@ class State(pc.State):
 
     def set_IPQS(self):
         url = self.url
+
+        # TODO:
+        # make async (?)
         score = get_IPQS(url)
         self.ipqs = score
 
