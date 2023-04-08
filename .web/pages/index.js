@@ -52,8 +52,8 @@ sx={{"bg": "#0051a8"}}><QuestionIcon/>
 sx={{"bg": "#0051a8"}}><CheckCircleIcon/>
 <AlertTitle sx={{"color": "white"}}>{(((((("\"" + state.url_display) + "\" is a ") + state.get_risk_str) + " website! (score: ") + state.risk_score) + ")")}</AlertTitle></Alert> : <Text sx={{"color": "white"}}>{`Type a URL`}</Text>}
 <Container sx={{"borderBottom": "0.5px solid grey", "height": "45px"}}><Input placeholder="Url to test (i.e., google.com)"
-focusBorderColor="None"
 type="text"
+focusBorderColor="None"
 onBlur={(_e) => Event([E("state.set_url", {value:_e.target.value})])}
 sx={{"border": "0px", "focusBorderColor": "None", "color": "white", "fontWeight": "semibold"}}/></Container>
 <Button colorScheme="green"

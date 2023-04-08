@@ -1,7 +1,9 @@
 # type: ignore
 # pylint: disable=no-member, fixme
 
+# TODOs...
 # TODO: connect Gmail API
+# TODO: connect TTS API
 
 import pynecone as pc
 from phishing_lib import get_IPQS

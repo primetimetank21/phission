@@ -1,3 +1,4 @@
+# type: ignore
 # pylint: disable=missing-timeout
 import requests
 import json

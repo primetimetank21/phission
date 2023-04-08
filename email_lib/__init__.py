@@ -1,6 +1,7 @@
 # email: jhnwck2023@gmail.com
 # pass:  password123EZ
 
+# type: ignore
 # Pylint disables (temp?)
 # pylint: disable=no-member,broad-exception-caught,import-error
 
