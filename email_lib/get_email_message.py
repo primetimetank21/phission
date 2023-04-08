@@ -1,3 +1,4 @@
+# type: ignore
 import base64
 from urlextract import URLExtract
 
@@ -14,6 +15,8 @@ def parse(msg) -> str:
             to_header = value
         elif name == "Date":
             date_header = value
+        elif name == "Subject":
+            subject_header = value
 
     # Get message (in utf-8 ascii text)
     parts = msg["payload"]["parts"]
@@ -28,4 +31,4 @@ def parse(msg) -> str:
     extractor = URLExtract()
     urls = extractor.find_urls(plain_text)
 
-    return (from_header, to_header, date_header, plain_text, urls)
+    return (from_header, to_header, date_header, subject_header, plain_text, urls)

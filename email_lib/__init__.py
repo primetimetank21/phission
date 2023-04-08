@@ -7,7 +7,6 @@
 
 # Modules
 import os.path
-import json
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
@@ -75,19 +74,24 @@ def get_all_messages() -> list:
                 .execute()
             )
 
-            from_header, to_header, date_header, plain_text, urls = parse(msg)
+            (
+                from_header,
+                to_header,
+                date_header,
+                subject_header,
+                plain_text,
+                urls,
+            ) = parse(msg)
             msg_dict = {
                 "From": from_header,
                 "To": to_header,
                 "Date": date_header,
+                "Subject": subject_header,
                 "Plain_Text": plain_text,
                 "URLs": urls,
             }
 
             msg_list.append(msg_dict)
-
-            # with open(f"email_{listing['id']}_data.json", "w", encoding="utf-8") as f:
-            #     json.dump(msg_dict, f, indent=4)
 
     except HttpError as error:
         print(f"An error occurred: {error}")
