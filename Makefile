@@ -9,4 +9,7 @@ format:
 lint:
 	pylint --disable=R,C $$(git ls-files "*.py")
 
+test:
+	echo "No tests required"
+
 all: install format lint
