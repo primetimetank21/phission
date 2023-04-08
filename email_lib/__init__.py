@@ -12,7 +12,7 @@ from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
-from get_email_message import parse
+from .get_email_message import parse
 
 
 # If modifying these scopes, delete the file token.json.
@@ -30,7 +30,10 @@ def get_creds() -> Credentials:
         # If there are no (valid) credentials available, let the user log in.
         if not creds or not creds.valid:
             if creds and creds.expired and creds.refresh_token:
-                creds.refresh(Request())
+                try:
+                    creds.refresh(Request())
+                except Exception as e:
+                    print(f"Error with creds.refresh(Request()): {e}")
             else:
                 flow = InstalledAppFlow.from_client_secrets_file(
                     "./email_lib/credentials.json", SCOPES
