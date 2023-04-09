@@ -3,6 +3,14 @@
 
 # TODOs...
 # TODO: connect Gmail API
+#   - format specific email page
+#   - have IPQS API calle only on specific email page user clicks on
+
+# TODO: add types to user output (i.e., phishing=True, malware=False, is_suspicious=True, etc.)
+# Dr. Washington TODOs:
+#   - add more exaggerated content (i.e., tts for warnings/danger, green/yellow/red for score, flashing for warnings/danger, etc.) => more animations?
+#   - add more context (i.e., "About" landing page, "Help me" guide, simple explanation of score and purpose, etc.) => optional?
+
 # TODO: connect TTS API
 
 import pynecone as pc
