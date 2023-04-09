@@ -6,7 +6,6 @@
 # TODO: connect TTS API
 
 import pynecone as pc
-from time import sleep
 from email_lib import get_all_messages
 from phishing_lib import get_IPQS
 from .styles import app_style
@@ -45,7 +44,6 @@ class State(pc.State):
     def get_emails(self):
         emails = get_all_messages()
         self.email_messages = emails
-        sleep(0.25)
         print(f"Length of email_messages: {len(emails)}")
 
     @pc.var
