@@ -2,7 +2,7 @@ import {Fragment, useEffect, useRef, useState} from "react"
 import {useRouter} from "next/router"
 import {E, connect, updateState} from "/utils/state"
 import "focus-visible/dist/focus-visible"
-import {Alert, AlertTitle, Button, Center, Container, Heading, Input, Text, VStack, useColorMode} from "@chakra-ui/react"
+import {Alert, AlertTitle, Button, Center, CircularProgress, Container, Heading, Input, Text, VStack, useColorMode} from "@chakra-ui/react"
 import {CheckCircleIcon, QuestionIcon, WarningTwoIcon} from "@chakra-ui/icons"
 import NextHead from "next/head"
 
@@ -51,15 +51,18 @@ sx={{"bg": "#0051a8"}}><QuestionIcon/>
 <AlertTitle sx={{"color": "white"}}>{(((((("\"" + state.url_display) + "\" is a ") + state.get_risk_str) + " website! (score: ") + state.risk_score) + ")")}</AlertTitle></Alert> : <Alert status="error"
 sx={{"bg": "#0051a8"}}><CheckCircleIcon/>
 <AlertTitle sx={{"color": "white"}}>{(((((("\"" + state.url_display) + "\" is a ") + state.get_risk_str) + " website! (score: ") + state.risk_score) + ")")}</AlertTitle></Alert> : <Text sx={{"color": "white"}}>{`Type a URL`}</Text>}
-<VStack>{state.email_panel_state.display_email_message_subjects ? <Fragment>{state.email_panel_state.email_message_subjects.map((mijhxghg, i) => <Button colorScheme={state.email_panel_state.button_color_scheme}
+<VStack>{state.email_panel_state.display_email_message_subjects ? <Fragment>{state.email_panel_state.email_message_subjects.map((ivujlrma, i) => <Button variant="solid"
 isFullWidth={true}
-variant="solid"
+colorScheme={state.email_panel_state.button_color_scheme}
 onClick={() => Event([E("state.email_panel_state.get_email_by_subject_index", {index:i})])}
 key={i}
-sx={{"height": "75px"}}><Text sx={{"fontSize": "2em", "color": state.email_panel_state.text_color}}>{mijhxghg}</Text></Button>)}</Fragment> : <Text>{`No messages`}</Text>}</VStack>
+sx={{"height": "75px"}}><Text sx={{"fontSize": "2em", "color": state.email_panel_state.text_color}}>{ivujlrma}</Text></Button>)}</Fragment> : <CircularProgress isIndeterminate={true}
+color="green"
+thickness={15}
+trackColor="white"/>}</VStack>
 <Container sx={{"borderBottom": "0.5px solid grey", "height": "45px"}}><Input type="text"
-placeholder="Url to test (i.e., google.com)"
 focusBorderColor="None"
+placeholder="Url to test (i.e., google.com)"
 onBlur={(_e) => Event([E("state.set_url", {value:_e.target.value})])}
 sx={{"border": "0px", "focusBorderColor": "None", "color": "white", "fontWeight": "semibold"}}/></Container>
 <Button colorScheme="green"

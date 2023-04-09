@@ -51,6 +51,11 @@ def email_panel_component(State: pc.State) -> pc.Component:
                     State, msg, index
                 ),
             ),
-            pc.text("No messages"),
+            pc.circular_progress(
+                is_indeterminate=True,
+                track_color="white",
+                color="green",
+                thickness=15,
+            ),
         )
     )
