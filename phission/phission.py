@@ -1,5 +1,5 @@
 # type: ignore
-# pylint: disable=no-member, fixme
+# pylint: disable=no-member, no-value-for-parameter, redefined-outer-name,fixme
 
 # TODOs...
 # TODO: connect Gmail API
@@ -43,6 +43,10 @@ class State(pc.State):
         print(f"Length of email_messages: {len(emails)}")
 
     @pc.var
+    def number_of_email_messages(self):
+        return len(self.email_messages)
+
+    @pc.var
     def email_message_subjects(self) -> list:
         if len(self.email_messages) == 0:
             return []
@@ -53,7 +57,6 @@ class State(pc.State):
 
     @pc.var
     def display_email_message_subjects(self):
-        print(self.email_message_subjects)
         if len(self.email_messages) > 0:
             return True
         else:
@@ -97,10 +100,55 @@ class State(pc.State):
             self.risk_score = score["risk_score"]
 
 
-def dummy_comp(msg):
-    return pc.text(msg)
+def email_ui(email_data: dict) -> pc.Component:
+    return pc.vstack(
+        pc.text(email_data["From"]),
+        pc.text(email_data["To"]),
+        pc.text(email_data["Date"]),
+        pc.text(email_data["Subject"]),
+        pc.text(email_data["Plain_Text"]),
+        pc.text(email_data["URLs"]),
+        display="flex",
+        align_items="center",
+        justify_content="center",
+    )
 
 
+def get_email(subject_index: int, email_dict: dict):
+    def email_page() -> pc.Component:
+        return email_ui(email_dict)
+
+    @pc.route(route=f"/emails/{subject_index}")
+    def email_page_route() -> pc.Component:
+        return email_page()
+
+    return email_page_route
+
+
+class EmailPanelState(State):
+    text_color: list = "black"
+    button_bg_color: list = "green"
+
+    def get_email_by_subject_index(self, index):
+        email = self.email_messages[index]
+        get_email(index, email)
+        app.compile()
+        return pc.redirect(f"http://localhost:3000/emails/{index}")
+
+
+def email_panel_component(msg: str, index: int):
+    return pc.button(
+        pc.text(msg, font_size="2em", color="white"),
+        is_full_width=True,
+        height="75px",
+        variant="solid",
+        color_scheme="green",
+        # on_click goes here...
+        on_click=lambda: EmailPanelState.get_email_by_subject_index(index),
+    )
+
+
+@pc.route(route="/", title="Phissi👁️n Home")
 def index() -> pc.Component:
     return pc.center(
         pc.vstack(
@@ -110,10 +158,9 @@ def index() -> pc.Component:
                 pc.cond(
                     State.display_email_message_subjects,
                     pc.foreach(
-                        # State.email_message_subjects,
                         State.email_message_subjects,
-                        lambda msg: dummy_comp(  # pylint: disable=unnecessary-lambda
-                            msg
+                        lambda msg, index: email_panel_component(  # pylint: disable=unnecessary-lambda
+                            msg, index
                         ),
                     ),
                     pc.text("No messages"),
