@@ -10,7 +10,13 @@ from time import sleep
 from email_lib import get_all_messages
 from phishing_lib import get_IPQS
 from .styles import app_style
-from components import button_component, score_display_component, input_component
+from components import (
+    button_component,
+    score_display_component,
+    input_component,
+    email_panel_component,
+)
+from components.email_panel import get_email
 
 
 # State
@@ -100,31 +106,6 @@ class State(pc.State):
             self.risk_score = score["risk_score"]
 
 
-def email_ui(email_data: dict) -> pc.Component:
-    return pc.vstack(
-        pc.text(email_data["From"]),
-        pc.text(email_data["To"]),
-        pc.text(email_data["Date"]),
-        pc.text(email_data["Subject"]),
-        pc.text(email_data["Plain_Text"]),
-        pc.text(email_data["URLs"]),
-        display="flex",
-        align_items="center",
-        justify_content="center",
-    )
-
-
-def get_email(subject_index: int, email_dict: dict):
-    def email_page() -> pc.Component:
-        return email_ui(email_dict)
-
-    @pc.route(route=f"/emails/{subject_index}")
-    def email_page_route() -> pc.Component:
-        return email_page()
-
-    return email_page_route
-
-
 class EmailPanelState(State):
     text_color: list = "black"
     button_bg_color: list = "green"
@@ -136,36 +117,13 @@ class EmailPanelState(State):
         return pc.redirect(f"http://localhost:3000/emails/{index}")
 
 
-def email_panel_component(msg: str, index: int):
-    return pc.button(
-        pc.text(msg, font_size="2em", color="white"),
-        is_full_width=True,
-        height="75px",
-        variant="solid",
-        color_scheme="green",
-        # on_click goes here...
-        on_click=lambda: EmailPanelState.get_email_by_subject_index(index),
-    )
-
-
 @pc.route(route="/", title="Phissi👁️n Home")
 def index() -> pc.Component:
     return pc.center(
         pc.vstack(
             pc.heading("Welcome to Phissi👁️n!", font_size="2em"),
             score_display_component(State),
-            pc.vstack(
-                pc.cond(
-                    State.display_email_message_subjects,
-                    pc.foreach(
-                        State.email_message_subjects,
-                        lambda msg, index: email_panel_component(  # pylint: disable=unnecessary-lambda
-                            msg, index
-                        ),
-                    ),
-                    pc.text("No messages"),
-                )
-            ),
+            email_panel_component(EmailPanelState),
             input_component(State),
             button_component(State),
             spacing="1.5em",

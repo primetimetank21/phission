@@ -51,23 +51,23 @@ sx={{"bg": "#0051a8"}}><QuestionIcon/>
 <AlertTitle sx={{"color": "white"}}>{(((((("\"" + state.url_display) + "\" is a ") + state.get_risk_str) + " website! (score: ") + state.risk_score) + ")")}</AlertTitle></Alert> : <Alert status="error"
 sx={{"bg": "#0051a8"}}><CheckCircleIcon/>
 <AlertTitle sx={{"color": "white"}}>{(((((("\"" + state.url_display) + "\" is a ") + state.get_risk_str) + " website! (score: ") + state.risk_score) + ")")}</AlertTitle></Alert> : <Text sx={{"color": "white"}}>{`Type a URL`}</Text>}
-<VStack>{state.display_email_message_subjects ? <Fragment>{state.email_message_subjects.map((bochauic, i) => <Button colorScheme="green"
+<VStack>{state.display_email_message_subjects ? <Fragment>{state.email_message_subjects.map((njubdsju, i) => <Button isFullWidth={true}
+colorScheme="green"
 variant="solid"
-isFullWidth={true}
 onClick={() => Event([E("state.email_panel_state.get_email_by_subject_index", {index:i})])}
 key={i}
-sx={{"height": "75px"}}><Text sx={{"fontSize": "2em", "color": "white"}}>{bochauic}</Text></Button>)}</Fragment> : <Text>{`No messages`}</Text>}</VStack>
+sx={{"height": "75px"}}><Text sx={{"fontSize": "2em", "color": "white"}}>{njubdsju}</Text></Button>)}</Fragment> : <Text>{`No messages`}</Text>}</VStack>
 <Container sx={{"borderBottom": "0.5px solid grey", "height": "45px"}}><Input placeholder="Url to test (i.e., google.com)"
-focusBorderColor="None"
 type="text"
+focusBorderColor="None"
 onBlur={(_e) => Event([E("state.set_url", {value:_e.target.value})])}
 sx={{"border": "0px", "focusBorderColor": "None", "color": "white", "fontWeight": "semibold"}}/></Container>
 <Button colorScheme="green"
 onClick={() => Event([E("state.set_IPQS", {})])}>{`Go Phish`}</Button></VStack>
 <NextHead><title>{`Phissi👁️n Home`}</title>
-<meta content="A Pynecone app."
-name="description"/>
-<meta content="favicon.ico"
-property="og:image"/></NextHead></Center>
+<meta name="description"
+content="A Pynecone app."/>
+<meta property="og:image"
+content="favicon.ico"/></NextHead></Center>
 )
 }

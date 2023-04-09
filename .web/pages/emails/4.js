@@ -41,8 +41,8 @@ useEffect(() => {
   update()
 })
 return (
-<VStack justifyContent="center"
-alignItems="center"
+<VStack alignItems="center"
+justifyContent="center"
 sx={{"display": "flex"}}><Text>{`Google <no-reply@accounts.google.com>`}</Text>
 <Text>{`jhnwck2023@gmail.com`}</Text>
 <Text>{`Thu, 02 Mar 2023 22:27:55 GMT`}</Text>
@@ -65,9 +65,9 @@ Google Account and services.
 `}</Text>
 <Text>{`["https://accounts.google.com/AccountChooser?Email=jhnwck2023@gmail.com&continue=https://myaccount.google.com/alert/nt/1677796075252?rfn%3D325%26rfnc%3D1%26eid%3D2286003474807739465%26et%3D0", "https://myaccount.google.com/notifications"]`}</Text>
 <NextHead><title>{`Pynecone App`}</title>
-<meta content="A Pynecone app."
-name="description"/>
-<meta content="favicon.ico"
-property="og:image"/></NextHead></VStack>
+<meta name="description"
+content="A Pynecone app."/>
+<meta property="og:image"
+content="favicon.ico"/></NextHead></VStack>
 )
 }
