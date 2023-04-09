@@ -8,7 +8,7 @@ import NextHead from "next/head"
 
 const EVENT = "ws://localhost:8000/event"
 export default function Component() {
-const [state, setState] = useState({"display_score": false, "email_messages": [], "email_panel_state": {"button_bg_color": "green", "display_email_message_subjects": false, "email_message_subjects": [], "number_of_email_messages": 0, "text_color": "black"}, "get_risk_str": "somewhat safe", "ipqs": {}, "risk_score": null, "url": "", "url_display": "", "user_email": "jhnwck2023@gmail.com", "user_password": "password123EZ", "events": [{"name": "state.hydrate"}]})
+const [state, setState] = useState({"display_score": false, "email_messages": [], "email_panel_state": {"button_color_scheme": "green", "display_email_message_subjects": false, "email_message_subjects": [], "number_of_email_messages": 0, "text_color": "black"}, "get_risk_str": "somewhat safe", "ipqs": {}, "risk_score": null, "url": "", "url_display": "", "user_email": "jhnwck2023@gmail.com", "user_password": "password123EZ", "events": [{"name": "state.hydrate"}]})
 const [result, setResult] = useState({"state": null, "events": [], "processing": false})
 const router = useRouter()
 const socket = useRef(null)
@@ -51,22 +51,22 @@ sx={{"bg": "#0051a8"}}><QuestionIcon/>
 <AlertTitle sx={{"color": "white"}}>{(((((("\"" + state.url_display) + "\" is a ") + state.get_risk_str) + " website! (score: ") + state.risk_score) + ")")}</AlertTitle></Alert> : <Alert status="error"
 sx={{"bg": "#0051a8"}}><CheckCircleIcon/>
 <AlertTitle sx={{"color": "white"}}>{(((((("\"" + state.url_display) + "\" is a ") + state.get_risk_str) + " website! (score: ") + state.risk_score) + ")")}</AlertTitle></Alert> : <Text sx={{"color": "white"}}>{`Type a URL`}</Text>}
-<VStack>{state.email_panel_state.display_email_message_subjects ? <Fragment>{state.email_panel_state.email_message_subjects.map((offbncsf, i) => <Button isFullWidth={true}
+<VStack>{state.email_panel_state.display_email_message_subjects ? <Fragment>{state.email_panel_state.email_message_subjects.map((mijhxghg, i) => <Button colorScheme={state.email_panel_state.button_color_scheme}
+isFullWidth={true}
 variant="solid"
-colorScheme="green"
 onClick={() => Event([E("state.email_panel_state.get_email_by_subject_index", {index:i})])}
 key={i}
-sx={{"height": "75px"}}><Text sx={{"fontSize": "2em", "color": "white"}}>{offbncsf}</Text></Button>)}</Fragment> : <Text>{`No messages`}</Text>}</VStack>
-<Container sx={{"borderBottom": "0.5px solid grey", "height": "45px"}}><Input focusBorderColor="None"
-type="text"
+sx={{"height": "75px"}}><Text sx={{"fontSize": "2em", "color": state.email_panel_state.text_color}}>{mijhxghg}</Text></Button>)}</Fragment> : <Text>{`No messages`}</Text>}</VStack>
+<Container sx={{"borderBottom": "0.5px solid grey", "height": "45px"}}><Input type="text"
 placeholder="Url to test (i.e., google.com)"
+focusBorderColor="None"
 onBlur={(_e) => Event([E("state.set_url", {value:_e.target.value})])}
 sx={{"border": "0px", "focusBorderColor": "None", "color": "white", "fontWeight": "semibold"}}/></Container>
 <Button colorScheme="green"
 onClick={() => Event([E("state.set_IPQS", {})])}>{`Go Phish`}</Button></VStack>
 <NextHead><title>{`Phissi👁️n Home`}</title>
-<meta content="A Pynecone app."
-name="description"/>
+<meta name="description"
+content="A Pynecone app."/>
 <meta content="favicon.ico"
 property="og:image"/></NextHead></Center>
 )

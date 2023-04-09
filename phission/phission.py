@@ -85,8 +85,8 @@ class State(pc.State):
 
 
 class EmailPanelState(State):
-    text_color: list = "black"
-    button_bg_color: list = "green"
+    text_color: str = "black"
+    button_color_scheme: str = "green"
 
     @pc.var
     def number_of_email_messages(self):
