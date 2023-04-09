@@ -49,26 +49,6 @@ class State(pc.State):
         print(f"Length of email_messages: {len(emails)}")
 
     @pc.var
-    def number_of_email_messages(self):
-        return len(self.email_messages)
-
-    @pc.var
-    def email_message_subjects(self) -> list:
-        if len(self.email_messages) == 0:
-            return []
-
-        subjects: list = [email["Subject"] for email in self.email_messages]
-        print(f"email_message_subjects:{subjects}")
-        return subjects
-
-    @pc.var
-    def display_email_message_subjects(self):
-        if len(self.email_messages) > 0:
-            return True
-        else:
-            return False
-
-    @pc.var
     def display_score(self):
         if len(self.url_display) > 0 and self.risk_score is not None:
             return True
@@ -109,6 +89,26 @@ class State(pc.State):
 class EmailPanelState(State):
     text_color: list = "black"
     button_bg_color: list = "green"
+
+    @pc.var
+    def number_of_email_messages(self):
+        return len(self.email_messages)
+
+    @pc.var
+    def email_message_subjects(self) -> list:
+        if len(self.email_messages) == 0:
+            return []
+
+        subjects = [email["Subject"] for email in self.email_messages]
+        print(f"email_message_subjects:{subjects}")
+        return subjects
+
+    @pc.var
+    def display_email_message_subjects(self):
+        if len(self.email_messages) > 0:
+            return True
+        else:
+            return False
 
     def get_email_by_subject_index(self, index):
         email = self.email_messages[index]
