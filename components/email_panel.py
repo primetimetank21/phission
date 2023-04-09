@@ -17,7 +17,7 @@ def email_ui(email_data: dict) -> pc.Component:
     )
 
 
-def get_email(subject_index: int, email_dict: dict):
+def get_email(subject_index: int, email_dict: dict) -> pc.Component:
     def email_page() -> pc.Component:
         return email_ui(email_dict)
 
@@ -28,7 +28,9 @@ def get_email(subject_index: int, email_dict: dict):
     return email_page_route
 
 
-def specific_email_panel_component(State: pc.State, msg: str, index: int):
+def specific_email_panel_component(
+    State: pc.State, msg: str, index: int
+) -> pc.Component:
     return pc.button(
         pc.text(msg, font_size="2em", color="white"),
         is_full_width=True,
@@ -39,7 +41,7 @@ def specific_email_panel_component(State: pc.State, msg: str, index: int):
     )
 
 
-def email_panel_component(State):
+def email_panel_component(State: pc.State) -> pc.Component:
     return pc.vstack(
         pc.cond(
             State.display_email_message_subjects,

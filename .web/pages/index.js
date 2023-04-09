@@ -51,22 +51,22 @@ sx={{"bg": "#0051a8"}}><QuestionIcon/>
 <AlertTitle sx={{"color": "white"}}>{(((((("\"" + state.url_display) + "\" is a ") + state.get_risk_str) + " website! (score: ") + state.risk_score) + ")")}</AlertTitle></Alert> : <Alert status="error"
 sx={{"bg": "#0051a8"}}><CheckCircleIcon/>
 <AlertTitle sx={{"color": "white"}}>{(((((("\"" + state.url_display) + "\" is a ") + state.get_risk_str) + " website! (score: ") + state.risk_score) + ")")}</AlertTitle></Alert> : <Text sx={{"color": "white"}}>{`Type a URL`}</Text>}
-<VStack>{state.email_panel_state.display_email_message_subjects ? <Fragment>{state.email_panel_state.email_message_subjects.map((wfmrxcvo, i) => <Button variant="solid"
+<VStack>{state.email_panel_state.display_email_message_subjects ? <Fragment>{state.email_panel_state.email_message_subjects.map((offbncsf, i) => <Button isFullWidth={true}
+variant="solid"
 colorScheme="green"
-isFullWidth={true}
 onClick={() => Event([E("state.email_panel_state.get_email_by_subject_index", {index:i})])}
 key={i}
-sx={{"height": "75px"}}><Text sx={{"fontSize": "2em", "color": "white"}}>{wfmrxcvo}</Text></Button>)}</Fragment> : <Text>{`No messages`}</Text>}</VStack>
-<Container sx={{"borderBottom": "0.5px solid grey", "height": "45px"}}><Input placeholder="Url to test (i.e., google.com)"
+sx={{"height": "75px"}}><Text sx={{"fontSize": "2em", "color": "white"}}>{offbncsf}</Text></Button>)}</Fragment> : <Text>{`No messages`}</Text>}</VStack>
+<Container sx={{"borderBottom": "0.5px solid grey", "height": "45px"}}><Input focusBorderColor="None"
 type="text"
-focusBorderColor="None"
+placeholder="Url to test (i.e., google.com)"
 onBlur={(_e) => Event([E("state.set_url", {value:_e.target.value})])}
 sx={{"border": "0px", "focusBorderColor": "None", "color": "white", "fontWeight": "semibold"}}/></Container>
 <Button colorScheme="green"
 onClick={() => Event([E("state.set_IPQS", {})])}>{`Go Phish`}</Button></VStack>
 <NextHead><title>{`Phissi👁️n Home`}</title>
-<meta name="description"
-content="A Pynecone app."/>
+<meta content="A Pynecone app."
+name="description"/>
 <meta content="favicon.ico"
 property="og:image"/></NextHead></Center>
 )

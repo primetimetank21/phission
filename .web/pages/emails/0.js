@@ -58,8 +58,8 @@ https://link.thesocialman.com/a/325/unsubscribe/9950699/743348217/95ac0f0997da31
 `}</Text>
 <Text>{`["https://link.thesocialman.com/a/325/unsubscribe/9950699/743348217/95ac0f0997da31d7dce49b4818407872dd872cc4"]`}</Text>
 <NextHead><title>{`Pynecone App`}</title>
-<meta name="description"
-content="A Pynecone app."/>
+<meta content="A Pynecone app."
+name="description"/>
 <meta content="favicon.ico"
 property="og:image"/></NextHead></VStack>
 )
