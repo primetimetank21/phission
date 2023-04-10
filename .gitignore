@@ -130,6 +130,7 @@ dmypy.json
 
 # Next.js Generated files
 .web
+pynecone.db
 
 # Private JSON files
 credentials.json

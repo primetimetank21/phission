@@ -10,17 +10,21 @@
 # Dr. Washington TODOs:
 #   - add more exaggerated content (i.e., tts for warnings/danger, green/yellow/red for score, flashing for warnings/danger, etc.) => more animations?
 #   - add more context (i.e., "About" landing page, "Help me" guide, simple explanation of score and purpose, etc.) => optional?
+#   - emotional API: https://humeai.github.io/hume-python-sdk/0.1.6/
+#   - implement one of these (for emotional data analysis): https://thecleverprogrammer.com/2021/08/24/sarcasm-detection-with-machine-learning/
+
 
 # TODO: connect TTS API
 
 import pynecone as pc
+from time import sleep
 from email_lib import get_all_messages
 from phishing_lib import get_IPQS
 from .styles import app_style
 from components import (
-    button_component,
-    score_display_component,
-    input_component,
+    # button_component,
+    # score_display_component,
+    # input_component,
     email_panel_component,
 )
 from components.email_panel import get_email
@@ -50,9 +54,22 @@ class State(pc.State):
     ipqs: dict = {}
 
     def get_emails(self):
-        emails = get_all_messages()
-        self.email_messages = emails
-        print(f"Length of email_messages: {len(emails)}")
+        reloads = 3
+        emails = []
+        while len(emails) == 0:
+            if reloads >= 0:
+                try:
+                    emails = get_all_messages()
+                    print(f"Length of email_messages: {len(emails)}")
+                    self.email_messages = emails
+                    break
+                except Exception as e:  # pylint: disable=broad-exception-caught
+                    print(f"Error in 'get_emails()': {e}")
+                finally:
+                    reloads -= 1
+                    sleep(5)
+            else:
+                break
 
     @pc.var
     def display_score(self):
@@ -128,12 +145,12 @@ def index() -> pc.Component:
     return pc.center(
         pc.vstack(
             pc.heading("Welcome to Phissi👁️n!", font_size="2em"),
-            score_display_component(State),
+            # score_display_component(State),
             email_panel_component(EmailPanelState),
-            input_component(State),
-            button_component(State),
+            # input_component(State),
+            # button_component(State),
             spacing="1.5em",
-            font_size="2em",
+            font_size="1.75em",
         ),
         # vstack formatting
         style=app_style,
