@@ -32,8 +32,9 @@ def specific_email_panel_component(
     State: pc.State, msg: str, index: int
 ) -> pc.Component:
     return pc.button(
-        pc.text(msg, font_size="2em", color=State.text_color),
-        is_full_width=True,
+        pc.text(msg, font_size="1.75em", color=State.text_color),
+        # is_full_width=True,
+        width="75vw",
         height="75px",
         variant="solid",
         color_scheme=State.button_color_scheme,
