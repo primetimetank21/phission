@@ -4,11 +4,12 @@
 # TODOs...
 # TODO: connect Gmail API
 #   - format specific email page
-#   - have IPQS API calle only on specific email page user clicks on
+#   - have IPQS API called only on specific email page user clicks on
 
 # TODO: add types to user output (i.e., phishing=True, malware=False, is_suspicious=True, etc.)
 # Dr. Washington TODOs:
 #   - add more exaggerated content (i.e., tts for warnings/danger, green/yellow/red for score, flashing for warnings/danger, etc.) => more animations?
+#       => emojis: https://thecleverprogrammer.com/2022/06/15/print-emojis-using-python/
 #   - add more context (i.e., "About" landing page, "Help me" guide, simple explanation of score and purpose, etc.) => optional?
 #   - emotional API: https://humeai.github.io/hume-python-sdk/0.1.6/
 #   - implement one of these (for emotional data analysis): https://thecleverprogrammer.com/2021/08/24/sarcasm-detection-with-machine-learning/
@@ -159,5 +160,5 @@ def index() -> pc.Component:
 
 # Add state and page to the app.
 app = pc.App(state=State)
-app.add_page(index, on_load=State.get_emails)
+app.add_page(index, route="/", on_load=State.get_emails)
 app.compile()
