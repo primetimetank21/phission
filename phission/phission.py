@@ -28,16 +28,7 @@ from components import (
     # input_component,
     email_panel_component,
 )
-from components.email_panel import get_email_page_route
-
-
-def set_email_page_routes(emails):
-    for i, email in enumerate(emails):
-        email_route = get_email_page_route(email)
-        app.add_page(
-            email_route, title=f"Email {i}", route="/emails/" + str(i)
-        )  # TODO: add on_load => run get_IPQS on each URL (if any) using asyncio
-    app.compile()
+from components.email_panel import set_email_page_routes
 
 
 # State
@@ -71,7 +62,7 @@ class State(pc.State):
                 try:
                     emails = get_all_messages()
                     print(f"Length of email_messages: {len(emails)}")
-                    set_email_page_routes(emails)
+                    set_email_page_routes(emails, app)
                     self.email_messages = emails
                     break
                 except Exception as e:  # pylint: disable=broad-exception-caught

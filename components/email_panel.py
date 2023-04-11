@@ -24,6 +24,16 @@ def get_email_page_route(email_dict: dict) -> pc.Component:
     return email_page
 
 
+# pylint: disable=fixme
+def set_email_page_routes(emails, app):
+    for i, email in enumerate(emails):
+        email_route = get_email_page_route(email)
+        app.add_page(
+            email_route, title=f"Email {i}", route="/emails/" + str(i)
+        )  # TODO: add on_load => run get_IPQS on each URL (if any) using asyncio
+    app.compile()
+
+
 def get_href(i):
     return "/emails/" + i
 
