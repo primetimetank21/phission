@@ -17,28 +17,35 @@ def email_ui(email_data: dict) -> pc.Component:
     )
 
 
-def get_email(subject_index: int, email_dict: dict) -> pc.Component:
+def get_email_page_route(email_dict: dict) -> pc.Component:
     def email_page() -> pc.Component:
         return email_ui(email_dict)
 
-    @pc.route(route=f"/emails/{subject_index}")
-    def email_page_route() -> pc.Component:
-        return email_page()
+    return email_page
 
-    return email_page_route
+
+def get_href(i):
+    return "/emails/" + i
 
 
 def specific_email_panel_component(
     State: pc.State, msg: str, index: int
 ) -> pc.Component:
-    return pc.button(
-        pc.text(msg, font_size="1.75em", color=State.text_color),
-        # is_full_width=True,
-        width="75vw",
-        height="75px",
-        variant="solid",
-        color_scheme=State.button_color_scheme,
-        on_click=lambda: State.get_email_by_subject_index(index),
+    PADDING = "20px"
+
+    return pc.link(
+        pc.button(
+            pc.text(msg, font_size="2em", color=State.text_color),
+            width="95vw",
+            height="auto",
+            padding_top=PADDING,
+            padding_bottom=PADDING,
+            variant="solid",
+            color_scheme=State.button_color_scheme,
+            # on_click=lambda: State.get_email_by_subject_index(index),
+        ),
+        href=get_href(index),
+        is_external=True,
     )
 
 
@@ -58,5 +65,6 @@ def email_panel_component(State: pc.State) -> pc.Component:
                 color="green",
                 thickness=15,
             ),
-        )
+        ),
+        height="auto",
     )
