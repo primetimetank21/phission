@@ -4,13 +4,49 @@ import pynecone as pc
 
 
 def email_ui(email_data: dict) -> pc.Component:
+    # pc.text(email_data["From"]),
+    # pc.text(email_data["To"]),
+    # pc.text(email_data["Date"]),
+    # pc.text(email_data["Subject"]),
+    # pc.text(email_data["Plain_Text"]),
+    # pc.text(email_data["URLs"]),
+
     return pc.vstack(
-        pc.text(email_data["From"]),
-        pc.text(email_data["To"]),
-        pc.text(email_data["Date"]),
-        pc.text(email_data["Subject"]),
-        pc.text(email_data["Plain_Text"]),
-        pc.text(email_data["URLs"]),
+        pc.heading(email_data["Subject"]),
+        pc.hstack(
+            pc.vstack(
+                pc.text(email_data["From"]),
+                pc.text(email_data["Plain_Text"]),  # message content
+                # vstack styling
+                flex=1,
+                width="50vw",
+                padding_left="20px",
+                padding_right="20px",
+            ),
+            pc.vstack(
+                pc.unordered_list(
+                    *([pc.list_item(url) for url in email_data["URLs"]]),
+                    # list styling
+                    # display="flex",
+                    # align_items="center",
+                    # justify_content="center",
+                    spacing=".25em",
+                    flex=1,
+                ),
+                # vstack styling
+                display="flex",
+                align_items="center",
+                justify_content="center",
+                width="50vw",
+                padding_left="20px",
+                padding_right="20px",
+            ),
+            # hstack styling
+            display="flex",
+            align_items="center",
+            justify_content="center",
+        ),
+        # vstack styling
         display="flex",
         align_items="center",
         justify_content="center",
