@@ -128,6 +128,10 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+# Next.js Generated files
+.web
+pynecone.db
+
 # Private JSON files
 credentials.json
 token.json
