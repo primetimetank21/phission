@@ -10,3 +10,9 @@ container_style = {
     # "width":"auto",
     "height": "45px",
 }
+
+email_page_style = {
+    "bg": "#0051a8",
+    "height": "100vh",
+    "width": "100vw",
+}
