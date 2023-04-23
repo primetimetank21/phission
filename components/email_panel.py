@@ -13,6 +13,8 @@ def clean_email_data(email_data: dict):
     email_sender_name = email_sender[0].strip().replace('"', "")  # .split(",")
     # email_sender_name = f"{email_sender_name[1]} {email_sender_name[0]}"
 
+    email_receiver_email = email_data["To"]
+
     link_map_dict = {f"Link_{i+1}": link for i, link in enumerate(email_data["URLs"])}
     for link_abbreviation, link in link_map_dict.items():
         if link in email_data["Plain_Text"]:
@@ -21,6 +23,7 @@ def clean_email_data(email_data: dict):
             )
     plain_text_modded_links = email_data["Plain_Text"]
     return (
+        email_receiver_email,
         email_sender_email,
         email_sender_name,
         link_map_dict,
@@ -61,6 +64,7 @@ def email_page_skeleton(email_data: dict, State: pc.State) -> pc.Component:
 
     # clean up email_data
     (
+        email_receiver_email,
         email_sender_email,
         email_sender_name,
         link_map_dict,
@@ -71,11 +75,11 @@ def email_page_skeleton(email_data: dict, State: pc.State) -> pc.Component:
 
     return pc.vstack(
         pc.heading(email_data["Subject"], font_size="6em"),
-        pc.center(
+        pc.flex(
             pc.hstack(
                 pc.vstack(
                     pc.text(email_sender_name, font_size="3em"),
-                    pc.text(f"<{email_sender_email}>", font_size="1.5em"),
+                    pc.text(f"From: <{email_sender_email}>", font_size="1.5em"),
                     highlighted_links(plain_text_modded_links, link_map_dict),
                     # vstack styling
                     width="50vw",
@@ -97,7 +101,6 @@ def email_page_skeleton(email_data: dict, State: pc.State) -> pc.Component:
 
 def no_link_email_page(email_data: dict, State: pc.State) -> pc.Component:
     # clean up email_data
-    # email_sender_email, email_sender_name, link_map_list, plain_text_modded_links = clean_email_data(email_data)
     emotional_gifs = [
         "https://media.tenor.com/FKlml5CuZCEAAAAC/purple-banana-syndicate-pbs.gif",
         "https://www.icegif.com/wp-content/uploads/2022/10/icegif-1341.gif",
@@ -109,6 +112,7 @@ def no_link_email_page(email_data: dict, State: pc.State) -> pc.Component:
     chosen_gif = choice(emotional_gifs)
     return pc.vstack(
         pc.text("No links found in email", font_size="3em"),
+        pc.text(" ", font_size="1.5em"),
         pc.image(
             src=chosen_gif,
             # src=emotional_gifs[-1],
@@ -136,29 +140,55 @@ def link_email_page(email_data: dict, State: pc.State) -> pc.Component:
     """
     # clean up email_data
     (
+        email_receiver_email,
         email_sender_email,
         email_sender_name,
-        link_map_list,
+        link_map_dict,
         plain_text_modded_links,
     ) = clean_email_data(email_data)
 
     return pc.vstack(
-        pc.unordered_list(
-            *([pc.list_item(url) for url in email_data["URLs"]]),
-            # list styling
-            # display="flex",
-            # align_items="center",
-            # justify_content="center",
-            spacing=".25em",
-            flex=1,
+        pc.text("Links in email", font_size="3em"),
+        pc.text(f"To: <{email_receiver_email}>", font_size="1.5em"),
+        pc.center(
+            pc.unordered_list(
+                *(
+                    [
+                        pc.list_item(
+                            pc.text(
+                                *(
+                                    pc.text(
+                                        f"{mod_link}:", as_="mark", font_size="2em"
+                                    ),
+                                    pc.text(" ", as_="b", font_size="0.75em"),
+                                    pc.text(
+                                        link,
+                                        as_="b",
+                                        font_size="0.75em",
+                                        style={"text_decoration": "underline"},
+                                    ),
+                                )
+                            )
+                        )
+                        for mod_link, link in link_map_dict.items()
+                    ]
+                ),
+                # list styling
+                # display="flex",
+                # align_items="center",
+                # justify_content="center",
+                spacing=".25em",
+                flex=1,
+            ),
+            # vstack styling
+            display="flex",
+            align_items="center",
+            justify_content="center",
+            width="50vw",
+            padding_left="20px",
+            padding_right="20px",
         ),
-        # vstack styling
-        display="flex",
-        align_items="center",
-        justify_content="center",
-        width="50vw",
-        padding_left="20px",
-        padding_right="20px",
+        # center styling
     )
 
 
