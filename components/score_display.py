@@ -3,7 +3,7 @@
 import pynecone as pc
 
 
-def score_display_component(State) -> pc.Component:
+def score_display_component(State: pc.State) -> pc.Component:
     # risk_icon = get_risk_icon()
 
     alert_msg = (
@@ -37,11 +37,25 @@ def score_display_component(State) -> pc.Component:
                     bg="#0051a8",
                 ),
             ),
-            pc.alert(  # somewhat safe
-                pc.icon(tag="check_circle"),
-                pc.alert_title(alert_msg, color="white"),
-                status="error",
-                bg="#0051a8",
+            pc.cond(
+                risk_score > 0,
+                pc.alert(  # somewhat safe
+                    pc.icon(tag="check_circle"),
+                    pc.alert_title(alert_msg, color="white"),
+                    status="error",
+                    bg="#0051a8",
+                ),
+                pc.alert(  # error occured
+                    pc.icon(tag="question"),
+                    pc.alert_title(
+                        "An error occured with the IPQS API (score: "
+                        + State.risk_score
+                        + ")",
+                        color="white",
+                    ),
+                    status="error",
+                    bg="#0051a8",
+                ),
             ),
         ),
         pc.text("Type a URL", color="white"),

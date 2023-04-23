@@ -2,7 +2,6 @@
 
 import pynecone as pc
 from random import choice
-from phishing_lib import get_IPQS
 from .score_display import score_display_component
 from .styles import email_page_style, hstack_style
 
@@ -14,12 +13,9 @@ def clean_email_data(email_data: dict):
 
     email_receiver_email = email_data["To"]
 
-    link_map_dict = {
-        f"Link_{i+1}": (link, get_IPQS(link))
-        for (i, link) in enumerate(email_data["URLs"])
-    }
-    print(link_map_dict)
-    for link_abbreviation, (link, ipqs_score) in link_map_dict.items():
+    link_map_dict = {f"Link_{i+1}": link for (i, link) in enumerate(email_data["URLs"])}
+    # print(link_map_dict)
+    for link_abbreviation, link in link_map_dict.items():
         if link in email_data["Plain_Text"]:
             email_data["Plain_Text"] = email_data["Plain_Text"].replace(
                 link, link_abbreviation
@@ -39,9 +35,14 @@ def clean_email_data(email_data: dict):
 def highlighted_links(email_plain_text: str, link_map_dict: dict) -> pc.Component:
     email_text_links = []
     index_pos = 0
+    newline_indices = [
+        i for i, character in enumerate(email_plain_text) if character == "\n"
+    ]
+    print(f"newline_indices: {newline_indices}")
 
     for key in link_map_dict.keys():
         key_pos = email_plain_text.index(key)
+        # TODO: make email message look neater by implementing newlines
         email_text_links.append(pc.text(email_plain_text[index_pos:key_pos], as_="b"))
         email_text_links.append(
             pc.text(key, as_="mark")
@@ -76,7 +77,9 @@ def email_page_skeleton(email_data: dict, State: pc.State) -> pc.Component:
         plain_text_modded_links,
     ) = clean_email_data(email_data)
     # print(rf"{plain_text_modded_links}")
-    body_component = no_link_email_page if email_data["URLs"] == [] else link_email_page
+    right_body_component = (
+        no_link_email_page if email_data["URLs"] == [] else link_email_page
+    )
     has_link = False if email_data["URLs"] == [] else True
 
     return pc.vstack(
@@ -94,13 +97,18 @@ def email_page_skeleton(email_data: dict, State: pc.State) -> pc.Component:
                     bg="green",
                     # flex=1,
                 ),
-                body_component(email_data, State),
+                right_body_component(email_data, State),
                 # hstack styling
                 style=hstack_style,
             ),
             # flex styling
         ),
         # display component goes here
+        # TODO: make this look better
+        # TODO: add TTS functionality
+        #   - read score
+        #   - read how many links found within email
+        #   - read text that is clicked on (pass to State.tts_speak via on_click)
         pc.cond(
             has_link,
             pc.cond(
@@ -114,9 +122,7 @@ def email_page_skeleton(email_data: dict, State: pc.State) -> pc.Component:
                     height="100%",
                 ),
                 pc.center(
-                    pc.box(
-                        pc.text("Click on a link"),
-                    ),
+                    pc.text("Click on a link"),
                     bg="yellow",
                     width="100%",
                     height="100%",
@@ -193,7 +199,12 @@ def link_email_page(email_data: dict, State: pc.State) -> pc.Component:
                                         as_="mark",
                                         font_size="2em",
                                         _hover={"cursor": "pointer"},
-                                        on_click=lambda: State.set_IPQS(link),
+                                        on_click=lambda: State.set_IPQS(
+                                            link.replace("https://", "").replace(
+                                                "http://", ""
+                                            ),
+                                            mod_link,
+                                        ),
                                     ),
                                     pc.text(" ", as_="b", font_size="0.75em"),
                                     pc.text(
@@ -205,7 +216,7 @@ def link_email_page(email_data: dict, State: pc.State) -> pc.Component:
                                 ),
                             )
                         )
-                        for mod_link, (link, ipqs_score) in link_map_dict.items()
+                        for mod_link, link in link_map_dict.items()
                     ]
                 ),
                 # list styling
@@ -244,9 +255,7 @@ def set_email_page_routes(emails, app):
             email_route,
             title=f"Email {i}",
             route="/emails/" + str(i),
-        )  # TODO: add on_load => run get_IPQS on each URL (if any) using asyncio
-    app.state.ipqs = {"hello": "this that value baby"}
-    print("App State: ", app.state.ipqs)
+        )
     app.compile()
 
 
@@ -271,7 +280,6 @@ def specific_email_panel_component(
             pc.text(msg, font_size="2em", color=State.text_color),
             color_scheme=State.button_color_scheme,
             style=button_style,
-            # on_click=lambda: State.get_email_by_subject_index(index),
         ),
         href=get_href(index),
         is_external=True,

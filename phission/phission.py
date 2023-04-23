@@ -96,8 +96,7 @@ class State(pc.State):
 
         return risk_lvl
 
-    def set_IPQS(self, url):
-        # url = self.url
+    def set_IPQS(self, url: str, mod_link: str):
         self.url = url
         # TODO:
         # make async (?)
@@ -105,10 +104,12 @@ class State(pc.State):
         self.ipqs = score
 
         # TODO: remove this print statement
-        print(score)
+        print(f"SCORE: {score}")
+        self.url_display = mod_link
         if score:
-            self.url_display = url
             self.risk_score = score["risk_score"]
+        else:
+            self.risk_score = -1
 
 
 class EmailPanelState(State):
