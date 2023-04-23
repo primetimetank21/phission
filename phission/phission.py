@@ -96,9 +96,9 @@ class State(pc.State):
 
         return risk_lvl
 
-    def set_IPQS(self):
-        url = self.url
-
+    def set_IPQS(self, url):
+        # url = self.url
+        self.url = url
         # TODO:
         # make async (?)
         score = get_IPQS(url)

@@ -1,27 +1,32 @@
-# pylint: disable=no-member,unused-argument,unused-variable,fixme
+# pylint: disable=no-member,unused-argument,unused-variable,fixme,cell-var-from-loop
 
 import pynecone as pc
 from random import choice
+from phishing_lib import get_IPQS
+from .score_display import score_display_component
 from .styles import email_page_style, hstack_style
 
 
 def clean_email_data(email_data: dict):
-    # print(f"email_data['From']: {email_data['From']}")
     email_sender = email_data["From"].split("<")
-    # print(f"email_sender: {email_sender}")
     email_sender_email = email_sender[1].replace(">", "").strip()
-    email_sender_name = email_sender[0].strip().replace('"', "")  # .split(",")
-    # email_sender_name = f"{email_sender_name[1]} {email_sender_name[0]}"
+    email_sender_name = email_sender[0].strip().replace('"', "")
 
     email_receiver_email = email_data["To"]
 
-    link_map_dict = {f"Link_{i+1}": link for i, link in enumerate(email_data["URLs"])}
-    for link_abbreviation, link in link_map_dict.items():
+    link_map_dict = {
+        f"Link_{i+1}": (link, get_IPQS(link))
+        for (i, link) in enumerate(email_data["URLs"])
+    }
+    print(link_map_dict)
+    for link_abbreviation, (link, ipqs_score) in link_map_dict.items():
         if link in email_data["Plain_Text"]:
             email_data["Plain_Text"] = email_data["Plain_Text"].replace(
                 link, link_abbreviation
             )
+
     plain_text_modded_links = email_data["Plain_Text"]
+
     return (
         email_receiver_email,
         email_sender_email,
@@ -72,6 +77,7 @@ def email_page_skeleton(email_data: dict, State: pc.State) -> pc.Component:
     ) = clean_email_data(email_data)
     # print(rf"{plain_text_modded_links}")
     body_component = no_link_email_page if email_data["URLs"] == [] else link_email_page
+    has_link = False if email_data["URLs"] == [] else True
 
     return pc.vstack(
         pc.heading(email_data["Subject"], font_size="6em"),
@@ -92,7 +98,31 @@ def email_page_skeleton(email_data: dict, State: pc.State) -> pc.Component:
                 # hstack styling
                 style=hstack_style,
             ),
-            # center styling
+            # flex styling
+        ),
+        # display component goes here
+        pc.cond(
+            has_link,
+            pc.cond(
+                State.display_score,
+                pc.center(
+                    pc.box(
+                        score_display_component(State),
+                    ),
+                    bg="yellow",
+                    width="100%",
+                    height="100%",
+                ),
+                pc.center(
+                    pc.box(
+                        pc.text("Click on a link"),
+                    ),
+                    bg="yellow",
+                    width="100%",
+                    height="100%",
+                ),
+            ),
+            None,
         ),
         # vstack styling
         style=email_page_style,
@@ -113,6 +143,7 @@ def no_link_email_page(email_data: dict, State: pc.State) -> pc.Component:
     return pc.vstack(
         pc.text("No links found in email", font_size="3em"),
         pc.text(" ", font_size="1.5em"),
+        pc.text(State.ipqs["hello"]),
         pc.image(
             src=chosen_gif,
             # src=emotional_gifs[-1],
@@ -158,7 +189,11 @@ def link_email_page(email_data: dict, State: pc.State) -> pc.Component:
                             pc.text(
                                 *(
                                     pc.text(
-                                        f"{mod_link}:", as_="mark", font_size="2em"
+                                        f"{mod_link}:",
+                                        as_="mark",
+                                        font_size="2em",
+                                        _hover={"cursor": "pointer"},
+                                        on_click=lambda: State.set_IPQS(link),
                                     ),
                                     pc.text(" ", as_="b", font_size="0.75em"),
                                     pc.text(
@@ -167,16 +202,13 @@ def link_email_page(email_data: dict, State: pc.State) -> pc.Component:
                                         font_size="0.75em",
                                         style={"text_decoration": "underline"},
                                     ),
-                                )
+                                ),
                             )
                         )
-                        for mod_link, link in link_map_dict.items()
+                        for mod_link, (link, ipqs_score) in link_map_dict.items()
                     ]
                 ),
                 # list styling
-                # display="flex",
-                # align_items="center",
-                # justify_content="center",
                 spacing=".25em",
                 flex=1,
             ),
@@ -189,6 +221,7 @@ def link_email_page(email_data: dict, State: pc.State) -> pc.Component:
             padding_right="20px",
         ),
         # center styling
+        bg="purple",
     )
 
 
@@ -208,8 +241,12 @@ def set_email_page_routes(emails, app):
     for i, email in enumerate(emails):
         email_route = get_email_page_route(email, app.state)
         app.add_page(
-            email_route, title=f"Email {i}", route="/emails/" + str(i)
+            email_route,
+            title=f"Email {i}",
+            route="/emails/" + str(i),
         )  # TODO: add on_load => run get_IPQS on each URL (if any) using asyncio
+    app.state.ipqs = {"hello": "this that value baby"}
+    print("App State: ", app.state.ipqs)
     app.compile()
 
 
@@ -221,16 +258,19 @@ def specific_email_panel_component(
     State: pc.State, msg: str, index: int
 ) -> pc.Component:
     PADDING = "20px"
+    button_style = {
+        "width": "95vw",
+        "height": "auto",
+        "padding_top": PADDING,
+        "padding_bottom": PADDING,
+        "variant": "solid",
+    }
 
     return pc.link(
         pc.button(
             pc.text(msg, font_size="2em", color=State.text_color),
-            width="95vw",
-            height="auto",
-            padding_top=PADDING,
-            padding_bottom=PADDING,
-            variant="solid",
             color_scheme=State.button_color_scheme,
+            style=button_style,
             # on_click=lambda: State.get_email_by_subject_index(index),
         ),
         href=get_href(index),
@@ -247,6 +287,7 @@ def email_panel_component(State: pc.State) -> pc.Component:
                 lambda msg, index: specific_email_panel_component(  # pylint: disable=unnecessary-lambda
                     State, msg, index
                 ),
+                overflow="auto",
             ),
             pc.circular_progress(
                 is_indeterminate=True,
