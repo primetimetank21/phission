@@ -89,7 +89,7 @@ def email_page_skeleton(email_data: dict, State: pc.State) -> pc.Component:
         link_map_dict,
         plain_text_modded_links,
     ) = clean_email_data(email_data)
-    # print(rf"{plain_text_modded_links}")
+
     right_body_component = (
         no_link_email_page if email_data["URLs"] == [] else link_email_page
     )
@@ -107,12 +107,7 @@ def email_page_skeleton(email_data: dict, State: pc.State) -> pc.Component:
                 "color": ORANGE,
             },
         ),
-        # display component goes here
-        # TODO: make this look better (add CSS => optional?)
-        # TODO: add TTS functionality
-        #   - read score
-        #   - read how many links found within email
-        #   - read text that is clicked on (pass to State.tts_speak via on_click)
+        # display component
         pc.cond(
             has_link,
             pc.cond(
@@ -224,13 +219,21 @@ def no_link_email_page(email_data: dict, State: pc.State) -> pc.Component:
         pc.text(" ", font_size="1.5em"),
         pc.image(
             src=chosen_gif,
-            on_click=lambda: State.tts_speak(
-                """
-                This is a gif. I made it myself! Do you like it? If so, please tell
-                Dr. Washington that you liked my project! Thank you!
-                """,
-                140,
-            ),
+            on_click=[
+                lambda: State.tts_speak(
+                    choice(
+                        [
+                            "This is a gif. I made it myself! Wink. Wink. Do you like it?",
+                            "This is a gif. I made it myself! Ha ha. I'm just kidding. I didn't make it myself. Did I fool you?",
+                        ]
+                    ),
+                    140,
+                ),
+                lambda: State.tts_speak(
+                    "If so, please tell Dr. Washington that you liked my project! Thank you!",
+                    140,
+                ),
+            ],
             _hover={"cursor": "pointer"},
             flex=2,
             height="100%",
@@ -331,6 +334,10 @@ def link_email_page(email_data: dict, State: pc.State) -> pc.Component:
                                                     [
                                                         f"Click the alert above if you want to hear my beautiful voice read {mod_link}'s score!",
                                                         f"Click the alert above if you want me to read {mod_link}'s score!",
+                                                        " ",
+                                                        " ",
+                                                        " ",
+                                                        " ",
                                                     ]
                                                 ),
                                                 140,

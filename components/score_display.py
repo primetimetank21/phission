@@ -1,7 +1,8 @@
 # pylint: disable=no-member
 
+from random import choice
 import pynecone as pc
-from .styles import BLACK, GREEN, ORANGE, RED, YELLOW
+from .styles import BLACK, GREEN, ORANGE, RED, WHITE, YELLOW
 
 
 def score_display(
@@ -11,7 +12,7 @@ def score_display(
     tag: str,
     bg: str,
     status: str,
-    font_color: str = "white",
+    font_color: str = WHITE,
 ):
     return pc.flex(
         pc.alert(  # high risk
@@ -20,7 +21,7 @@ def score_display(
                 alert_msg,
                 color=font_color,
                 font_size="3em",
-                on_click=lambda: State.tts_speak(f"{alert_msg}. {extra_tts_msg}", 140),
+                on_click=lambda: State.tts_speak(alert_msg + f". {extra_tts_msg}", 140),
                 _hover={"cursor": "pointer", "color": ORANGE},
             ),
             status=status,
@@ -31,7 +32,8 @@ def score_display(
             padding="5px",
             border=f"5px thin {bg}",
             height="100%",
-            radius=10,
+            min_height="75px",
+            # radius=10,
         ),
         # bg="purple",
         justify_content="center",
@@ -66,7 +68,13 @@ def score_display_component(State: pc.State) -> pc.Component:
                 score_display(
                     State=State,
                     alert_msg=alert_msg,
-                    extra_tts_msg="DANGER! Please don't click this link! I believe it would be a huge mistake!",
+                    extra_tts_msg=choice(
+                        [
+                            "DANGER! Please don't click this link! I believe it would be a huge mistake!",
+                            "This link is kind of sus. VERY. SUS. I don't recommend clicking this link.",
+                            "Bruh. Ain't no way. Don't click this link.",
+                        ]
+                    ),
                     tag="warning_two",
                     bg=RED,
                     status="error",

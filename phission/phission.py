@@ -1,16 +1,6 @@
 # type: ignore
 # pylint: disable=no-member, no-value-for-parameter, redefined-outer-name,fixme
 
-# TODO: add types to user output (i.e., phishing=True, malware=False, is_suspicious=True, etc.)
-# Dr. Washington TODOs:
-#   - add more exaggerated content (i.e., tts for warnings/danger, green/yellow/red for score, flashing for warnings/danger, etc.) => more animations?
-#       => emojis: https://thecleverprogrammer.com/2022/06/15/print-emojis-using-python/
-#   - add more context (i.e., "About" landing page, "Help me" guide, simple explanation of score and purpose, etc.) => optional?
-#   - emotional API: https://humeai.github.io/hume-python-sdk/0.1.6/
-#   - implement one of these (for emotional data analysis): https://thecleverprogrammer.com/2021/08/24/sarcasm-detection-with-machine-learning/
-
-
-# TODO: connect TTS API
 # TODO: style app more!
 #   - css and pseudo chakra props: https://chakra-ui.com/docs/styled-system/style-props#pseudo
 
@@ -20,12 +10,7 @@ from email_lib import get_all_messages
 from phishing_lib import get_IPQS
 from tts_lib import tts
 from .styles import app_style, BLACK, WHITE
-from components import (
-    # button_component,
-    # score_display_component,
-    # input_component,
-    email_panel_component,
-)
+from components import email_panel_component
 from components.email_panel import set_email_page_routes
 
 
@@ -45,9 +30,6 @@ class State(pc.State):
     url_display: str = ""
     risk_score: int = None
 
-    # Dr. Washington TODOs:
-    #   [] add more exaggerated content (i.e., tts for warnings/danger, green/yellow/red for score, flashing for warnings/danger, etc.)
-    #   [] add more context (i.e., "About" landing page, "Help me" guide, simple explanation of score and purpose, etc.)
     ipqs: dict = {}
 
     def get_emails(self):
