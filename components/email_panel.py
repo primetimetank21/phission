@@ -3,7 +3,7 @@
 import pynecone as pc
 from random import choice
 from .score_display import score_display_component
-from .styles import DARKENED_ORANGE, email_page_style, hstack_style, ORANGE
+from .styles import BLACK, DARKENED_ORANGE, email_page_style, hstack_style, ORANGE
 
 
 def clean_email_data(email_data: dict):
@@ -64,7 +64,8 @@ def highlighted_links(
     return pc.center(
         pc.text(*email_text_links, font_size="2em"),
         border_radius="15px",
-        # border_width="thick",
+        padding="8px",
+        border=f"5px groove {ORANGE}",
         on_click=lambda: State.tts_speak(email_plain_text),
         _hover={"cursor": "pointer", "color": ORANGE},
     )
@@ -183,7 +184,10 @@ def email_page_skeleton(email_data: dict, State: pc.State) -> pc.Component:
                     padding_left="20px",
                     padding_right="20px",
                     padding_bottom="50px",
-                    bg="purple",
+                    bg=BLACK,
+                    border_radius="15px",
+                    padding="5px",
+                    border=f"5px thin {ORANGE}",
                     overflow="auto",
                     # flex=1,
                 ),
@@ -192,6 +196,7 @@ def email_page_skeleton(email_data: dict, State: pc.State) -> pc.Component:
                 style=hstack_style,
             ),
             # flex styling
+            pc.divider(),
         ),
         # vstack styling
         style=email_page_style,
@@ -227,8 +232,8 @@ def no_link_email_page(email_data: dict, State: pc.State) -> pc.Component:
                 140,
             ),
             _hover={"cursor": "pointer"},
-            flex=2
-            # src=emotional_gifs[-1],
+            flex=2,
+            height="100%",
         ),
         # vstack styling
         display="flex",
@@ -240,7 +245,10 @@ def no_link_email_page(email_data: dict, State: pc.State) -> pc.Component:
         padding_bottom="50px",
         height="100%",
         min_height="250px",
-        bg="purple",
+        bg=BLACK,
+        border_radius="15px",
+        padding="5px",
+        border=f"5px thin {ORANGE}",
         flex=1,
     )
 
@@ -287,9 +295,6 @@ def link_email_page(email_data: dict, State: pc.State) -> pc.Component:
                     [
                         f"To: <{email_receiver_email}>",
                         f"This email is to: <{email_receiver_email}>",
-                        "This email is to you",
-                        "This email is to you, silly! This is your email!",
-                        "This email is to you, silly! This is your email after all!",
                     ]
                 ),
                 140,
@@ -367,7 +372,10 @@ def link_email_page(email_data: dict, State: pc.State) -> pc.Component:
             padding_right="20px",
         ),
         # center styling
-        bg="purple",
+        bg=BLACK,
+        border_radius="15px",
+        padding="5px",
+        border=f"5px thin {ORANGE}",
         height="100%",
         min_height="250px",
     )
@@ -416,7 +424,6 @@ def specific_email_panel_component(
         pc.button(
             pc.text(msg, font_size="2em", color=State.text_color),
             # color_scheme=State.button_color_scheme,
-            color="white",
             bg=ORANGE,
             _hover={"bg": DARKENED_ORANGE},
             style=button_style,

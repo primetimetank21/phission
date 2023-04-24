@@ -19,7 +19,7 @@ from time import sleep
 from email_lib import get_all_messages
 from phishing_lib import get_IPQS
 from tts_lib import tts
-from .styles import app_style
+from .styles import app_style, BLACK, WHITE
 from components import (
     # button_component,
     # score_display_component,
@@ -111,8 +111,10 @@ class State(pc.State):
 
 
 class EmailPanelState(State):
-    text_color: str = "white"
-    button_color_scheme: str = "orange"
+    text_color: str = WHITE
+
+    def set_text_color(self, color: str):
+        self.text_color = color
 
     @pc.var
     def number_of_email_messages(self):
@@ -152,7 +154,8 @@ def index() -> pc.Component:
         email. The panels below will each take you to a different email message in your inbox. Please click on one to get started.
     """
     HELP_MESSAGE = """
-        Click the 'Purpose of Phission' or 'Instructions' buttons and I will share the necessary content.
+        Just about everything in this application is clickable, so click away! Click the 'Purpose of Phission' or 'Instructions'
+        buttons and I will share the necessary content.
     """
     return pc.center(
         pc.vstack(
@@ -172,9 +175,8 @@ def index() -> pc.Component:
                         140,
                     ),
                 ],
-                # color="black",
+                color=BLACK,
                 # _hover={"cursor": "pointer", "font_size": "5.1em", "color": "#f56e00"},
-                color="#000000",
                 _hover={"cursor": "pointer", "font_size": "5.1em", "color": "#FF7704"},
             ),
             pc.button_group(

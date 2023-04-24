@@ -1,7 +1,7 @@
 # pylint: disable=no-member
 
 import pynecone as pc
-from .styles import GREEN, RED, YELLOW
+from .styles import BLACK, GREEN, ORANGE, RED, YELLOW
 
 
 def score_display(
@@ -20,17 +20,20 @@ def score_display(
                 alert_msg,
                 color=font_color,
                 font_size="3em",
+                on_click=lambda: State.tts_speak(f"{alert_msg}. {extra_tts_msg}", 140),
+                _hover={"cursor": "pointer", "color": ORANGE},
             ),
             status=status,
             bg=bg,
             justify_content="center",
             width="75%",
+            border_radius="15px",
+            padding="5px",
+            border=f"5px thin {bg}",
             height="100%",
             radius=10,
-            on_click=lambda: State.tts_speak(alert_msg + extra_tts_msg, 140),
-            _hover={"cursor": "pointer"},
         ),
-        bg="purple",
+        # bg="purple",
         justify_content="center",
         align_items="center",
         height="100%",
@@ -48,7 +51,7 @@ def score_display_component(State: pc.State) -> pc.Component:
         + State.get_risk_str
         + " website! (score: "
         + State.risk_score
-        + "). "
+        + ")"
     )
 
     risk_score = State.risk_score
@@ -76,7 +79,7 @@ def score_display_component(State: pc.State) -> pc.Component:
                     tag="question",
                     bg=YELLOW,
                     status="error",
-                    font_color="black",
+                    font_color=BLACK,
                 ),
             ),
             pc.cond(
@@ -93,14 +96,12 @@ def score_display_component(State: pc.State) -> pc.Component:
                 # error occured
                 score_display(
                     State=State,
-                    alert_msg="An error occured with the IPQS API (score: "
-                    + State.risk_score
-                    + "). ",
+                    alert_msg="An error occured with the IPQS API (score: -1)",
                     extra_tts_msg="Click on the links at your own risk. I don't recommend it!",
                     tag="question",
                     bg=YELLOW,
                     status="error",
-                    font_color="black",
+                    font_color=BLACK,
                 ),
             ),
         ),
