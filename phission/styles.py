@@ -1,6 +1,6 @@
 app_style = {
     # "padding_top":"10%",
     "height": "100vh",
-    "width": "auto",
+    "max_width": "100vw",
     "bg": "#0051a8",
 }

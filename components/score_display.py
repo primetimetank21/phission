@@ -3,7 +3,32 @@
 import pynecone as pc
 
 
-def score_display_component(State) -> pc.Component:
+def score_display(
+    alert_msg: str, tag: str, bg: str, status: str, font_color: str = "white"
+):
+    return pc.flex(
+        pc.alert(  # high risk
+            pc.icon(tag=tag, font_size="2em"),
+            pc.alert_title(
+                alert_msg,
+                color=font_color,
+                font_size="2em",
+            ),
+            status=status,
+            # bg="#0051a8", #blue
+            bg=bg,  # sumn else
+            align_self="start",
+            justify_self="center",
+            justify_content="center",
+            radius=10,
+        ),
+        bg="purple",
+        height="100%",
+        width="100%",
+    )
+
+
+def score_display_component(State: pc.State) -> pc.Component:
     # risk_icon = get_risk_icon()
 
     alert_msg = (
@@ -24,24 +49,38 @@ def score_display_component(State) -> pc.Component:
             risk_score >= 75,
             pc.cond(  # for high risk vs suspicious
                 risk_score >= 85,
-                pc.alert(  # high risk
-                    pc.icon(tag="warning_two"),
-                    pc.alert_title(alert_msg, color="white"),
-                    status="error",
-                    bg="#0051a8",
+                # high risk
+                score_display(
+                    alert_msg=alert_msg, tag="warning_two", bg="#05abc3", status="error"
                 ),
-                pc.alert(  # suspicious
-                    pc.icon(tag="question"),
-                    pc.alert_title(alert_msg, color="white"),
+                # suspicious
+                score_display(
+                    alert_msg=alert_msg,
+                    tag="question",
+                    bg="yellow",
                     status="error",
-                    bg="#0051a8",
+                    font_color="black",
                 ),
             ),
-            pc.alert(  # somewhat safe
-                pc.icon(tag="check_circle"),
-                pc.alert_title(alert_msg, color="white"),
-                status="error",
-                bg="#0051a8",
+            pc.cond(
+                risk_score > 0,
+                # somewhat safe
+                score_display(
+                    alert_msg=alert_msg,
+                    tag="check_circle",
+                    bg="green",
+                    status="success",
+                ),
+                # error occured
+                score_display(
+                    alert_msg="An error occured with the IPQS API (score: "
+                    + State.risk_score
+                    + ")",
+                    tag="question",
+                    bg="yellow",
+                    status="error",
+                    font_color="black",
+                ),
             ),
         ),
         pc.text("Type a URL", color="white"),

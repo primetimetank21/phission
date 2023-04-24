@@ -42,7 +42,7 @@ def get_IPQS(url: str) -> dict:
 
     score = detect_phish(url, api_key)
     if score:
-        save_response(score)
+        # save_response(score)
         score = score.json()
 
     return score

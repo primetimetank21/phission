@@ -82,6 +82,7 @@ def get_all_messages() -> list:
                 plain_text,
                 urls,
             ) = parse(msg)
+
             msg_dict = {
                 "From": from_header,
                 "To": to_header,
@@ -92,7 +93,7 @@ def get_all_messages() -> list:
             }
 
             msg_list.append(msg_dict)
-
+        # print("msg_list[-1]:",msg_list[-1])
     except HttpError as error:
         print(f"An error occurred: {error}")
         msg_list = []
