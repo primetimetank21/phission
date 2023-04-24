@@ -3,7 +3,7 @@
 import pynecone as pc
 from random import choice
 from .score_display import score_display_component
-from .styles import email_page_style, hstack_style
+from .styles import DARKENED_ORANGE, email_page_style, hstack_style, ORANGE
 
 
 def clean_email_data(email_data: dict):
@@ -37,28 +37,36 @@ def highlighted_links(
 ) -> pc.Component:
     email_text_links = []
     index_pos = 0
-    newline_indices = [
-        i for i, character in enumerate(email_plain_text) if character == "\n"
-    ]
-    print(f"newline_indices: {newline_indices}")
 
-    for key in link_map_dict.keys():
-        key_pos = email_plain_text.index(key)
-        # TODO: make email message look neater by implementing newlines
-        email_text_links.append(pc.text(email_plain_text[index_pos:key_pos], as_="b"))
+    for short_link in link_map_dict.keys():
+        short_link_pos = email_plain_text.index(short_link)
+
         email_text_links.append(
-            pc.text(key, as_="mark")
-        )  # TODO: maybe make this a link (if it's safe)
-        index_pos = key_pos + len(key)
+            pc.text(
+                email_plain_text[index_pos:short_link_pos],
+                as_="b",
+                color=ORANGE,
+                style={"white_space": "pre-line"},
+            )
+        )
+        email_text_links.append(pc.text(short_link, as_="mark"))
+        index_pos = short_link_pos + len(short_link)
 
-    email_text_links.append(pc.text(email_plain_text[index_pos:], as_="b"))
+    email_text_links.append(
+        pc.text(
+            email_plain_text[index_pos:],
+            as_="b",
+            color=ORANGE,
+            style={"white_space": "pre-line"},
+        )
+    )
 
     return pc.center(
         pc.text(*email_text_links, font_size="2em"),
         border_radius="15px",
-        border_width="thick",
+        # border_width="thick",
         on_click=lambda: State.tts_speak(email_plain_text),
-        _hover={"cursor": "pointer"},
+        _hover={"cursor": "pointer", "color": ORANGE},
     )
 
 
@@ -95,9 +103,7 @@ def email_page_skeleton(email_data: dict, State: pc.State) -> pc.Component:
             ),
             _hover={
                 "cursor": "pointer",
-                "color": choice(
-                    ["red", "orange", "yellow", "green", "purple", "violet"]
-                ),
+                "color": ORANGE,
             },
         ),
         # display component goes here
@@ -112,7 +118,7 @@ def email_page_skeleton(email_data: dict, State: pc.State) -> pc.Component:
                 State.display_score,
                 pc.flex(
                     score_display_component(State),
-                    bg="yellow",
+                    # bg="yellow",
                     width="100%",
                     height="150px",
                 ),
@@ -124,9 +130,14 @@ def email_page_skeleton(email_data: dict, State: pc.State) -> pc.Component:
                         justify_self="center",
                         justify_content="center",
                         on_click=lambda: State.tts_speak("Click on a link"),
-                        _hover={"cursor": "pointer", "font_size": "3.1em"},
+                        color="#ffffff",
+                        _hover={
+                            "cursor": "pointer",
+                            "font_size": "3.1em",
+                            "color": ORANGE,
+                        },
                     ),
-                    bg="yellow",
+                    # bg="yellow",
                     width="100%",
                     # height="100%",
                     height="150px",
@@ -144,7 +155,12 @@ def email_page_skeleton(email_data: dict, State: pc.State) -> pc.Component:
                         on_click=lambda: State.tts_speak(
                             f"This message sender's name is: {email_sender_name}", 140
                         ),
-                        _hover={"cursor": "pointer", "font_size": "3.1em"},
+                        color="#ffffff",
+                        _hover={
+                            "cursor": "pointer",
+                            "font_size": "3.1em",
+                            "color": ORANGE,
+                        },
                     ),
                     pc.text(
                         f"From: <{email_sender_email}>",
@@ -152,7 +168,12 @@ def email_page_skeleton(email_data: dict, State: pc.State) -> pc.Component:
                         on_click=lambda: State.tts_speak(
                             f"From: <{email_sender_email}>", 140
                         ),
-                        _hover={"cursor": "pointer", "font_size": "1.75em"},
+                        color="#ffffff",
+                        _hover={
+                            "cursor": "pointer",
+                            "font_size": "1.6em",
+                            "color": ORANGE,
+                        },
                     ),
                     highlighted_links(State, plain_text_modded_links, link_map_dict),
                     # vstack styling
@@ -161,7 +182,8 @@ def email_page_skeleton(email_data: dict, State: pc.State) -> pc.Component:
                     min_height="250px",
                     padding_left="20px",
                     padding_right="20px",
-                    bg="green",
+                    padding_bottom="50px",
+                    bg="purple",
                     overflow="auto",
                     # flex=1,
                 ),
@@ -191,16 +213,21 @@ def no_link_email_page(email_data: dict, State: pc.State) -> pc.Component:
             "No links found in email",
             font_size="3em",
             on_click=lambda: State.tts_speak("No links found in email. Huzzah!", 150),
-            _hover={"cursor": "pointer", "font_size": "3.1em"},
+            color="#ffffff",
+            _hover={"cursor": "pointer", "font_size": "3.1em", "color": ORANGE},
         ),
         pc.text(" ", font_size="1.5em"),
         pc.image(
             src=chosen_gif,
             on_click=lambda: State.tts_speak(
-                "This is a gif. I made it myself! Do you like it? If so, please tell Dr. Washington that you liked my project! Thank you!",
-                130,
+                """
+                This is a gif. I made it myself! Do you like it? If so, please tell
+                Dr. Washington that you liked my project! Thank you!
+                """,
+                140,
             ),
-            _hover={"cursor": "pointer"}
+            _hover={"cursor": "pointer"},
+            flex=2
             # src=emotional_gifs[-1],
         ),
         # vstack styling
@@ -210,6 +237,9 @@ def no_link_email_page(email_data: dict, State: pc.State) -> pc.Component:
         width="50vw",
         padding_left="20px",
         padding_right="20px",
+        padding_bottom="50px",
+        height="100%",
+        min_height="250px",
         bg="purple",
         flex=1,
     )
@@ -246,7 +276,8 @@ def link_email_page(email_data: dict, State: pc.State) -> pc.Component:
                 ),
                 150,
             ),
-            _hover={"cursor": "pointer", "font_size": "3.1em"},
+            color="#ffffff",
+            _hover={"cursor": "pointer", "font_size": "3.1em", "color": ORANGE},
         ),
         pc.text(
             f"To: <{email_receiver_email}>",
@@ -263,7 +294,8 @@ def link_email_page(email_data: dict, State: pc.State) -> pc.Component:
                 ),
                 140,
             ),
-            _hover={"cursor": "pointer", "font_size": "1.6em"},
+            color="#ffffff",
+            _hover={"cursor": "pointer", "font_size": "1.6em", "color": ORANGE},
         ),
         pc.center(
             pc.unordered_list(
@@ -276,9 +308,11 @@ def link_email_page(email_data: dict, State: pc.State) -> pc.Component:
                                         f"{mod_link}:",
                                         as_="mark",
                                         font_size="2em",
+                                        color="#000000",
                                         _hover={
                                             "cursor": "pointer",
                                             "font_size": "2.1em",
+                                            "color": ORANGE,
                                         },
                                         on_click=[
                                             lambda: State.set_IPQS(
@@ -307,9 +341,11 @@ def link_email_page(email_data: dict, State: pc.State) -> pc.Component:
                                         on_click=lambda: State.tts_speak(
                                             f"{mod_link} is short for {link}", 140
                                         ),
+                                        color="#ffffff",
                                         _hover={
                                             "cursor": "pointer",
                                             "font_size": "2em",
+                                            "color": ORANGE,
                                         },
                                     ),
                                 ),
@@ -332,6 +368,8 @@ def link_email_page(email_data: dict, State: pc.State) -> pc.Component:
         ),
         # center styling
         bg="purple",
+        height="100%",
+        min_height="250px",
     )
 
 
@@ -377,7 +415,10 @@ def specific_email_panel_component(
     return pc.link(
         pc.button(
             pc.text(msg, font_size="2em", color=State.text_color),
-            color_scheme=State.button_color_scheme,
+            # color_scheme=State.button_color_scheme,
+            color="white",
+            bg=ORANGE,
+            _hover={"bg": DARKENED_ORANGE},
             style=button_style,
         ),
         href=get_href(index),
@@ -399,7 +440,7 @@ def email_panel_component(State: pc.State) -> pc.Component:
             pc.circular_progress(
                 is_indeterminate=True,
                 track_color="white",
-                color="green",
+                color=ORANGE,
                 thickness=15,
             ),
         ),

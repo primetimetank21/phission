@@ -111,8 +111,8 @@ class State(pc.State):
 
 
 class EmailPanelState(State):
-    text_color: str = "black"
-    button_color_scheme: str = "green"
+    text_color: str = "white"
+    button_color_scheme: str = "orange"
 
     @pc.var
     def number_of_email_messages(self):
@@ -156,6 +156,7 @@ def index() -> pc.Component:
     """
     return pc.center(
         pc.vstack(
+            pc.divider(),
             pc.heading(
                 "Welcome to Phissi👁️n!",
                 font_size="5em",
@@ -171,12 +172,17 @@ def index() -> pc.Component:
                         140,
                     ),
                 ],
-                _hover={"cursor": "pointer", "font_size": "5.1em", "color": "orange"},
+                # color="black",
+                # _hover={"cursor": "pointer", "font_size": "5.1em", "color": "#f56e00"},
+                color="#000000",
+                _hover={"cursor": "pointer", "font_size": "5.1em", "color": "#FF7704"},
             ),
             pc.button_group(
                 pc.button(
                     "Help",
-                    color_scheme="orange",
+                    color="white",
+                    bg="#FF7704",
+                    _hover={"bg": "#c25700"},
                     on_click=[
                         lambda: State.tts_speak(HELP_MESSAGE, 185),
                         lambda: State.tts_speak(
@@ -187,12 +193,16 @@ def index() -> pc.Component:
                 ),
                 pc.button(
                     "Purpose of Phissi👁️n",
-                    color_scheme="orange",
+                    color="white",
+                    bg="#FF7704",
+                    _hover={"bg": "#c25700"},
                     on_click=lambda: State.tts_speak(PURPOSE_MESSAGE, 175),
                 ),
                 pc.button(
                     "Instructions",
-                    color_scheme="orange",
+                    color="white",
+                    bg="#FF7704",
+                    _hover={"bg": "#c25700"},
                     on_click=lambda: State.tts_speak(INSTRUCTIONS_MESSAGE, 150),
                 ),
                 is_attached=True,
