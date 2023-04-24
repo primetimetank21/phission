@@ -1,4 +1,5 @@
-# pylint: disable=missing-timeout
+# pylint: disable=missing-timeout,broad-exception-caught
+
 import requests
 import json
 import os
@@ -11,12 +12,19 @@ from dotenv import load_dotenv
 #   - https://www.trendmicro.com/vinfo/us/threat-encyclopedia/malicious-url
 
 
-def detect_phish(url, api_key):
+def detect_phish(url, api_key) -> requests.Response:
     api_url = f"https://ipqualityscore.com/api/json/url/{api_key}/{url}"
-    res = requests.get(api_url)
 
-    print(res.status_code)
-    save_response(res)
+    try:
+        res = requests.get(api_url)
+        if not res.ok:
+            res = {}
+
+    except Exception as e:
+        print(f"Error in detect_phish(): {e}")
+        res = {}
+
+    return res
 
 
 def save_response(res):
@@ -25,15 +33,16 @@ def save_response(res):
         f.write(res_json)
 
 
-def main():
+def get_IPQS(url: str) -> dict:
     load_dotenv()
 
     # url = "vamoaestudiarmedicina.blogspot.com/"
-    url = "goalgoof.com"
+    # url = "goalgoof.com"
     api_key = os.environ.get("IPQS_API_KEY")
 
-    detect_phish(url, api_key)
+    score = detect_phish(url, api_key)
+    if score:
+        # save_response(score)
+        score = score.json()
 
-
-if __name__ == "__main__":
-    main()
+    return score
