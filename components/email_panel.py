@@ -32,7 +32,9 @@ def clean_email_data(email_data: dict):
     )
 
 
-def highlighted_links(email_plain_text: str, link_map_dict: dict) -> pc.Component:
+def highlighted_links(
+    State: pc.State, email_plain_text: str, link_map_dict: dict
+) -> pc.Component:
     email_text_links = []
     index_pos = 0
     newline_indices = [
@@ -55,6 +57,8 @@ def highlighted_links(email_plain_text: str, link_map_dict: dict) -> pc.Componen
         pc.text(*email_text_links, font_size="2em"),
         border_radius="15px",
         border_width="thick",
+        on_click=lambda: State.tts_speak(email_plain_text),
+        _hover={"cursor": "pointer"},
     )
 
 
@@ -83,7 +87,19 @@ def email_page_skeleton(email_data: dict, State: pc.State) -> pc.Component:
     has_link = False if email_data["URLs"] == [] else True
 
     return pc.vstack(
-        pc.heading(email_data["Subject"], font_size="6em"),
+        pc.heading(
+            email_data["Subject"],
+            font_size="6em",
+            on_click=lambda: State.tts_speak(
+                f"The email's message subject is: {email_data['Subject']}", 140
+            ),
+            _hover={
+                "cursor": "pointer",
+                "color": choice(
+                    ["red", "orange", "yellow", "green", "purple", "violet"]
+                ),
+            },
+        ),
         # display component goes here
         # TODO: make this look better (add CSS => optional?)
         # TODO: add TTS functionality
@@ -107,6 +123,8 @@ def email_page_skeleton(email_data: dict, State: pc.State) -> pc.Component:
                         align_self="start",
                         justify_self="center",
                         justify_content="center",
+                        on_click=lambda: State.tts_speak("Click on a link"),
+                        _hover={"cursor": "pointer", "font_size": "3.1em"},
                     ),
                     bg="yellow",
                     width="100%",
@@ -120,9 +138,23 @@ def email_page_skeleton(email_data: dict, State: pc.State) -> pc.Component:
         pc.flex(
             pc.hstack(
                 pc.vstack(
-                    pc.text(email_sender_name, font_size="3em"),
-                    pc.text(f"From: <{email_sender_email}>", font_size="1.5em"),
-                    highlighted_links(plain_text_modded_links, link_map_dict),
+                    pc.text(
+                        email_sender_name,
+                        font_size="3em",
+                        on_click=lambda: State.tts_speak(
+                            f"This message sender's name is: {email_sender_name}", 140
+                        ),
+                        _hover={"cursor": "pointer", "font_size": "3.1em"},
+                    ),
+                    pc.text(
+                        f"From: <{email_sender_email}>",
+                        font_size="1.5em",
+                        on_click=lambda: State.tts_speak(
+                            f"From: <{email_sender_email}>", 140
+                        ),
+                        _hover={"cursor": "pointer", "font_size": "1.75em"},
+                    ),
+                    highlighted_links(State, plain_text_modded_links, link_map_dict),
                     # vstack styling
                     width="50vw",
                     height="100%",
@@ -145,7 +177,6 @@ def email_page_skeleton(email_data: dict, State: pc.State) -> pc.Component:
 
 
 def no_link_email_page(email_data: dict, State: pc.State) -> pc.Component:
-    # clean up email_data
     emotional_gifs = [
         "https://media.tenor.com/FKlml5CuZCEAAAAC/purple-banana-syndicate-pbs.gif",
         "https://www.icegif.com/wp-content/uploads/2022/10/icegif-1341.gif",
@@ -156,11 +187,20 @@ def no_link_email_page(email_data: dict, State: pc.State) -> pc.Component:
     ]
     chosen_gif = choice(emotional_gifs)
     return pc.vstack(
-        pc.text("No links found in email", font_size="3em"),
+        pc.text(
+            "No links found in email",
+            font_size="3em",
+            on_click=lambda: State.tts_speak("No links found in email. Huzzah!", 150),
+            _hover={"cursor": "pointer", "font_size": "3.1em"},
+        ),
         pc.text(" ", font_size="1.5em"),
-        pc.text(State.ipqs["hello"]),
         pc.image(
             src=chosen_gif,
+            on_click=lambda: State.tts_speak(
+                "This is a gif. I made it myself! Do you like it? If so, please tell Dr. Washington that you liked my project! Thank you!",
+                130,
+            ),
+            _hover={"cursor": "pointer"}
             # src=emotional_gifs[-1],
         ),
         # vstack styling
@@ -194,8 +234,37 @@ def link_email_page(email_data: dict, State: pc.State) -> pc.Component:
     ) = clean_email_data(email_data)
 
     return pc.vstack(
-        pc.text("Links in email", font_size="3em"),
-        pc.text(f"To: <{email_receiver_email}>", font_size="1.5em"),
+        pc.text(
+            "Links in email",
+            font_size="3em",
+            on_click=lambda: State.tts_speak(
+                choice(
+                    [
+                        "Links in email",
+                        "Links in email. Hopefully nobody tried to deceive you",
+                    ]
+                ),
+                150,
+            ),
+            _hover={"cursor": "pointer", "font_size": "3.1em"},
+        ),
+        pc.text(
+            f"To: <{email_receiver_email}>",
+            font_size="1.5em",
+            on_click=lambda: State.tts_speak(
+                choice(
+                    [
+                        f"To: <{email_receiver_email}>",
+                        f"This email is to: <{email_receiver_email}>",
+                        "This email is to you",
+                        "This email is to you, silly! This is your email!",
+                        "This email is to you, silly! This is your email after all!",
+                    ]
+                ),
+                140,
+            ),
+            _hover={"cursor": "pointer", "font_size": "1.6em"},
+        ),
         pc.center(
             pc.unordered_list(
                 *(
@@ -207,13 +276,27 @@ def link_email_page(email_data: dict, State: pc.State) -> pc.Component:
                                         f"{mod_link}:",
                                         as_="mark",
                                         font_size="2em",
-                                        _hover={"cursor": "pointer"},
-                                        on_click=lambda: State.set_IPQS(
-                                            link.replace("https://", "").replace(
-                                                "http://", ""
+                                        _hover={
+                                            "cursor": "pointer",
+                                            "font_size": "2.1em",
+                                        },
+                                        on_click=[
+                                            lambda: State.set_IPQS(
+                                                link.replace("https://", "").replace(
+                                                    "http://", ""
+                                                ),
+                                                mod_link,
                                             ),
-                                            mod_link,
-                                        ),
+                                            lambda: State.tts_speak(
+                                                choice(
+                                                    [
+                                                        f"Click the alert above if you want to hear my beautiful voice read {mod_link}'s score!",
+                                                        f"Click the alert above if you want me to read {mod_link}'s score!",
+                                                    ]
+                                                ),
+                                                140,
+                                            ),
+                                        ],
                                     ),
                                     pc.text(" ", as_="b", font_size="0.75em"),
                                     pc.text(
@@ -221,6 +304,13 @@ def link_email_page(email_data: dict, State: pc.State) -> pc.Component:
                                         as_="b",
                                         font_size="0.75em",
                                         style={"text_decoration": "underline"},
+                                        on_click=lambda: State.tts_speak(
+                                            f"{mod_link} is short for {link}", 140
+                                        ),
+                                        _hover={
+                                            "cursor": "pointer",
+                                            "font_size": "2em",
+                                        },
                                     ),
                                 ),
                             )

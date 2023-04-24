@@ -4,7 +4,12 @@ import pynecone as pc
 
 
 def score_display(
-    alert_msg: str, tag: str, bg: str, status: str, font_color: str = "white"
+    State: pc.State,
+    alert_msg: str,
+    tag: str,
+    bg: str,
+    status: str,
+    font_color: str = "white",
 ):
     return pc.flex(
         pc.alert(  # high risk
@@ -21,6 +26,8 @@ def score_display(
             justify_self="center",
             justify_content="center",
             radius=10,
+            on_click=lambda: State.tts_speak(alert_msg, 140),
+            _hover={"cursor": "pointer"},
         ),
         bg="purple",
         height="100%",
@@ -51,10 +58,15 @@ def score_display_component(State: pc.State) -> pc.Component:
                 risk_score >= 85,
                 # high risk
                 score_display(
-                    alert_msg=alert_msg, tag="warning_two", bg="#05abc3", status="error"
+                    State=State,
+                    alert_msg=alert_msg,
+                    tag="warning_two",
+                    bg="#05abc3",
+                    status="error",
                 ),
                 # suspicious
                 score_display(
+                    State=State,
                     alert_msg=alert_msg,
                     tag="question",
                     bg="yellow",
@@ -66,6 +78,7 @@ def score_display_component(State: pc.State) -> pc.Component:
                 risk_score > 0,
                 # somewhat safe
                 score_display(
+                    State=State,
                     alert_msg=alert_msg,
                     tag="check_circle",
                     bg="green",
@@ -73,6 +86,7 @@ def score_display_component(State: pc.State) -> pc.Component:
                 ),
                 # error occured
                 score_display(
+                    State=State,
                     alert_msg="An error occured with the IPQS API (score: "
                     + State.risk_score
                     + ")",
