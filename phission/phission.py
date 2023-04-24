@@ -1,11 +1,6 @@
 # type: ignore
 # pylint: disable=no-member, no-value-for-parameter, redefined-outer-name,fixme
 
-# TODOs...
-# TODO: connect Gmail API
-#   - format specific email page
-#   - have IPQS API called only on specific email page user clicks on
-
 # TODO: add types to user output (i.e., phishing=True, malware=False, is_suspicious=True, etc.)
 # Dr. Washington TODOs:
 #   - add more exaggerated content (i.e., tts for warnings/danger, green/yellow/red for score, flashing for warnings/danger, etc.) => more animations?
@@ -47,8 +42,6 @@ class State(pc.State):
     url_display: str = ""
     risk_score: int = None
 
-    # TODO: extract more values from this in set_IPQS
-    # TODO: add types to user output (i.e., phishing=True, malware=False, is_suspicious=True, etc.)
     # Dr. Washington TODOs:
     #   [] add more exaggerated content (i.e., tts for warnings/danger, green/yellow/red for score, flashing for warnings/danger, etc.)
     #   [] add more context (i.e., "About" landing page, "Help me" guide, simple explanation of score and purpose, etc.)
@@ -98,8 +91,6 @@ class State(pc.State):
 
     def set_IPQS(self, url: str, mod_link: str):
         self.url = url
-        # TODO:
-        # make async (?)
         score = get_IPQS(url)
         self.ipqs = score
 
