@@ -84,27 +84,8 @@ def email_page_skeleton(email_data: dict, State: pc.State) -> pc.Component:
 
     return pc.vstack(
         pc.heading(email_data["Subject"], font_size="6em"),
-        pc.flex(
-            pc.hstack(
-                pc.vstack(
-                    pc.text(email_sender_name, font_size="3em"),
-                    pc.text(f"From: <{email_sender_email}>", font_size="1.5em"),
-                    highlighted_links(plain_text_modded_links, link_map_dict),
-                    # vstack styling
-                    width="50vw",
-                    padding_left="20px",
-                    padding_right="20px",
-                    bg="green",
-                    # flex=1,
-                ),
-                right_body_component(email_data, State),
-                # hstack styling
-                style=hstack_style,
-            ),
-            # flex styling
-        ),
         # display component goes here
-        # TODO: make this look better
+        # TODO: make this look better (add CSS => optional?)
         # TODO: add TTS functionality
         #   - read score
         #   - read how many links found within email
@@ -113,22 +94,50 @@ def email_page_skeleton(email_data: dict, State: pc.State) -> pc.Component:
             has_link,
             pc.cond(
                 State.display_score,
-                pc.center(
-                    pc.box(
-                        score_display_component(State),
+                pc.flex(
+                    score_display_component(State),
+                    bg="yellow",
+                    width="100%",
+                    height="150px",
+                ),
+                pc.flex(
+                    pc.text(
+                        "Click on a link",
+                        font_size="3em",
+                        align_self="start",
+                        justify_self="center",
+                        justify_content="center",
                     ),
                     bg="yellow",
                     width="100%",
-                    height="100%",
-                ),
-                pc.center(
-                    pc.text("Click on a link"),
-                    bg="yellow",
-                    width="100%",
-                    height="100%",
+                    # height="100%",
+                    height="150px",
+                    justify_content="center",
                 ),
             ),
             None,
+        ),
+        pc.flex(
+            pc.hstack(
+                pc.vstack(
+                    pc.text(email_sender_name, font_size="3em"),
+                    pc.text(f"From: <{email_sender_email}>", font_size="1.5em"),
+                    highlighted_links(plain_text_modded_links, link_map_dict),
+                    # vstack styling
+                    width="50vw",
+                    height="100%",
+                    min_height="250px",
+                    padding_left="20px",
+                    padding_right="20px",
+                    bg="green",
+                    overflow="auto",
+                    # flex=1,
+                ),
+                right_body_component(email_data, State),
+                # hstack styling
+                style=hstack_style,
+            ),
+            # flex styling
         ),
         # vstack styling
         style=email_page_style,

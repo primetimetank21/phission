@@ -16,6 +16,7 @@ email_page_style = {
     "height": "100vh",
     "width": "100vw",
     "display": "flex",
+    "overflow": "auto",
     "align_items": "center",
     "justify_content": "start",
     "flex": 1,
