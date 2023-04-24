@@ -16,6 +16,7 @@ import pynecone as pc
 from time import sleep
 from email_lib import get_all_messages
 from phishing_lib import get_IPQS
+from tts_lib import tts
 from .styles import app_style
 from components import (
     # button_component,
@@ -101,6 +102,10 @@ class State(pc.State):
             self.risk_score = score["risk_score"]
         else:
             self.risk_score = -1
+
+    def tts_speak(self, text: str):
+        tts(text)
+        print(f"Text: {text}")
 
 
 class EmailPanelState(State):
