@@ -1,10 +1,18 @@
 # pylint: disable=no-member
 
+from random import choice
 import pynecone as pc
+from .styles import BLACK, GREEN, ORANGE, RED, WHITE, YELLOW
 
 
 def score_display(
-    alert_msg: str, tag: str, bg: str, status: str, font_color: str = "white"
+    State: pc.State,
+    alert_msg: str,
+    extra_tts_msg: str,
+    tag: str,
+    bg: str,
+    status: str,
+    font_color: str = WHITE,
 ):
     return pc.flex(
         pc.alert(  # high risk
@@ -12,17 +20,24 @@ def score_display(
             pc.alert_title(
                 alert_msg,
                 color=font_color,
-                font_size="2em",
+                font_size="3em",
+                on_click=lambda: State.tts_speak(alert_msg + f". {extra_tts_msg}", 140),
+                _hover={"cursor": "pointer", "color": ORANGE},
             ),
             status=status,
-            # bg="#0051a8", #blue
-            bg=bg,  # sumn else
-            align_self="start",
-            justify_self="center",
+            bg=bg,
             justify_content="center",
-            radius=10,
+            width="75%",
+            border_radius="15px",
+            padding="5px",
+            border=f"5px thin {bg}",
+            height="100%",
+            min_height="75px",
+            # radius=10,
         ),
-        bg="purple",
+        # bg="purple",
+        justify_content="center",
+        align_items="center",
         height="100%",
         width="100%",
     )
@@ -51,35 +66,50 @@ def score_display_component(State: pc.State) -> pc.Component:
                 risk_score >= 85,
                 # high risk
                 score_display(
-                    alert_msg=alert_msg, tag="warning_two", bg="#05abc3", status="error"
+                    State=State,
+                    alert_msg=alert_msg,
+                    extra_tts_msg=choice(
+                        [
+                            "DANGER! Please don't click this link! I believe it would be a huge mistake!",
+                            "This link is kind of sus. VERY. SUS. I don't recommend clicking this link.",
+                            "Bruh. Ain't no way. Don't click this link.",
+                        ]
+                    ),
+                    tag="warning_two",
+                    bg=RED,
+                    status="error",
                 ),
                 # suspicious
                 score_display(
+                    State=State,
                     alert_msg=alert_msg,
+                    extra_tts_msg="This link is kind of sus. VERY. SUS. I don't recommend clicking this link.",
                     tag="question",
-                    bg="yellow",
+                    bg=YELLOW,
                     status="error",
-                    font_color="black",
+                    font_color=BLACK,
                 ),
             ),
             pc.cond(
                 risk_score > 0,
                 # somewhat safe
                 score_display(
+                    State=State,
                     alert_msg=alert_msg,
+                    extra_tts_msg="This link should not give you any problems. Huzzah!",
                     tag="check_circle",
-                    bg="green",
+                    bg=GREEN,
                     status="success",
                 ),
                 # error occured
                 score_display(
-                    alert_msg="An error occured with the IPQS API (score: "
-                    + State.risk_score
-                    + ")",
+                    State=State,
+                    alert_msg="An error occured with the IPQS API (score: -1)",
+                    extra_tts_msg="Click on the links at your own risk. I don't recommend it!",
                     tag="question",
-                    bg="yellow",
+                    bg=YELLOW,
                     status="error",
-                    font_color="black",
+                    font_color=BLACK,
                 ),
             ),
         ),
