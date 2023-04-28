@@ -1,6 +1,16 @@
 [![Python Versions](https://github.com/primetimetank21/tank-template/actions/workflows/python-versions.yml/badge.svg)](https://github.com/primetimetank21/tank-template/actions/workflows/python-versions.yml)
 
 # Phissi👁n
+## TABLE OF CONTENTS
+- [Overview](#overview)
+- [Goals](#goals)
+  - [Application Goals](#application)
+  - [Usability Test Goals](#usability-test)
+- [Usability Test Findings](#usability-test-findings)
+- [Usage](#how-to-use)
+  - [Installation](#installation)
+  - [Important Note](#important-note)
+
 ## OVERVIEW
 In this age of technology and information, Cyber Attacks are more common than ever before. So
 many applications in use today ask for personal information, and sometimes users mistakenly
