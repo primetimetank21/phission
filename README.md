@@ -29,10 +29,24 @@ By interacting with the potential users of our application (via questions and su
 Phissi👁n hope to create a software that will be continuously used to aid in the fight against Cyber
 Attacks.
 ## GOALS
+### APPLICATION
 1. Help all users (i.e., non-tech savvy individuals, visually impaired individuals, etc.) create
 more informed decisions before entering sensitive information.
 1. Increase overall awareness of Cyber Attacks.
 1. Reduce the number of successful Cyber Attacks (primarily phishing attacks).
+
+### USABILITY TEST
+- Observe user activities
+  - *What* they click on
+  - *Where* they navigate to without any guidance / verbal instruction
+  - *How* comfortable are they utilizing a new application
+- Measure user trust with…
+  - Artificial Intelligence (AI)
+    - *How* it sounds
+      - Speech speed
+      - Speech enunciation
+  - Links within emails
+    - *What* they look like
 
 ## USABILITY TEST FINDINGS
 - Check out the [Usability Testing](https://docs.google.com/presentation/d/19dAL0NC6uRPZGrvOdltecODBf4TGEM53/edit?usp=sharing&ouid=112236559360518646931&rtpof=true&sd=true) presentation for the results of my semester-long research (for Affective Computing and Human Computer Interaction).
