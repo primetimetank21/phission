@@ -34,6 +34,9 @@ more informed decisions before entering sensitive information.
 1. Increase overall awareness of Cyber Attacks.
 1. Reduce the number of successful Cyber Attacks (primarily phishing attacks).
 
+## USABILITY TEST FINDINGS
+- Check out the [Usability Testing](https://docs.google.com/presentation/d/19dAL0NC6uRPZGrvOdltecODBf4TGEM53/edit?usp=sharing&ouid=112236559360518646931&rtpof=true&sd=true) presentation for the results of my semester-long research (for Affective Computing and Human Computer Interaction).
+
 ## HOW TO USE
 ### INSTALLATION
 1. Clone this repository
