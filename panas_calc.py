@@ -43,7 +43,6 @@ def main():
         cols_to_save[pos_PANAS_col_name].append(df.loc[:, pos_PANAS_col_name])
         cols_to_save[neg_PANAS_col_name].append(df.loc[:, neg_PANAS_col_name])
 
-
     df = df.drop(columns=["name", neg_PANAS_col_name, pos_PANAS_col_name])
 
     for col_name, col_values in cols_to_save.items():
