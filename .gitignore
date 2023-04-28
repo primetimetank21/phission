@@ -138,3 +138,7 @@ token.json
 example_email*.json
 response.json
 email*.json
+
+# Private Survey data
+*.xlsx
+!phission_PANAS_results.xlsx

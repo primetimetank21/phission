@@ -46,3 +46,6 @@ more informed decisions before entering sensitive information.
     - `make install`
 1. Start the [Pynecone](https://pynecone.io/) server
     - `pc run`
+
+### Important Note
+- Various API keys are needed in order to properly utilize this tool. For more help on this, please contact Earl Tankard, Jr. via email (earl.tankard@bison.howard.edu).
