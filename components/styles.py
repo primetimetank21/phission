@@ -12,7 +12,7 @@ container_style = {
 }
 
 email_page_style = {
-    "bg": "#0051a8",
+    "bg": "#172671",
     "height": "100vh",
     "width": "100vw",
     "display": "flex",
@@ -24,8 +24,15 @@ email_page_style = {
 
 hstack_style = {
     "display": "flex",
-    "align_items": "start",
+    "align_items": "center",
     "justify_content": "center",
-    "bg": "red",
+    # "bg": "red",
     "flex": 1,
 }
+RED = "#D0342C"
+ORANGE = "#FF7704"
+DARKENED_ORANGE = "#c25700"
+YELLOW = "#E9D502"
+GREEN = "#4BB543"
+BLACK = "#1B1A2D"
+WHITE = "#FFFFFF"
