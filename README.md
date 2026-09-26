@@ -6,6 +6,10 @@ Phission is an interactive learning workspace for looking more carefully at emai
 
 Choose one of five authored emails, select a link, and explicitly run demo analysis. Every result is **simulated**. No email URL is opened, fetched, or submitted to a service. There is no mailbox connection, credential setup, arbitrary URL input, upload feature, analytics, database, or hidden live-mode switch.
 
+![Phission's synthetic inbox, selected email, and clearly labeled high-concern demo result](docs/demo-workspace.png)
+
+_Local production-build screenshot, captured in a 1440 × 1000 Chromium desktop viewport from [`29e4418`](https://github.com/primetimetank21/phission/tree/29e4418c2b9965d8dca475fed2ee8b9281b65a7f) on 2026-09-26. Messages and reputation results are synthetic; this is not live detection._
+
 ## Run locally
 
 Requirements: [uv](https://docs.astral.sh/uv/), Python **3.13 or 3.14**, and the platform prerequisites in the [Reflex installation guide](https://reflex.dev/docs/getting-started/installation/) (including `unzip` on Linux). Python dependencies are locked in `uv.lock`; Reflex is pinned to **0.9.12**. The generated `reflex.lock/bun.lock` and `reflex.lock/package.json` pin frontend dependencies. `.python-version` selects Python 3.13 by default. This setup is validated on Linux/WSL; native Windows and macOS are not yet verified.
