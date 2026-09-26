@@ -1,0 +1,17 @@
+From: Account Support <security@account-review.test>
+To: Alex Morgan <alex@example.org>
+Subject: Action required: your account closes today
+Date: Thu, 18 Jun 2026 09:45:00 +0000
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+
+FINAL NOTICE
+
+Your account will be suspended in 30 minutes unless you confirm your password. Do not contact your usual support team; they cannot prevent this closure.
+
+Confirm your account now:
+https://account-review.test/verify?source=email&step=confirm#account
+
+This request is urgent. Reply with your recovery code if the page does not load.
+
+Account Support

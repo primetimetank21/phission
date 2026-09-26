@@ -1,15 +1,41 @@
-install:
-	./.github/add_github_hooks.sh
-	pip install --upgrade pip &&\
-	pip install -r requirements.txt
+UV ?= uv
 
-format:
-	black $$(git ls-files "*.py")
+# Keep downloaded tooling and disposable framework state inside the project.
+export UV_CACHE_DIR := $(CURDIR)/.cache/uv
+export REFLEX_DIR := $(CURDIR)/.cache/reflex
+export XDG_CACHE_HOME := $(CURDIR)/.cache
+export BUN_INSTALL_CACHE_DIR := $(CURDIR)/.cache/bun
+export NPM_CONFIG_CACHE := $(CURDIR)/.cache/npm
+export REFLEX_TELEMETRY_ENABLED := false
+export REFLEX_USE_NPM := false
+export REFLEX_USE_SYSTEM_BUN := false
 
-lint:
-	pylint --disable=R,C $$(git ls-files "*.py")
+.PHONY: setup run test lint format check build frontend-tooling
+
+setup:
+	$(UV) sync --frozen
+	$(UV) run --frozen --no-sync python scripts/frontend.py setup
+
+# Do not let Reflex silently fall back to npm and replace the Bun lock.
+frontend-tooling:
+	@test -x "$(REFLEX_DIR)/bun/bin/bun" || { echo "Run make setup to install project-local Bun."; exit 1; }
+
+# Production mode serves the UI and Python backend together on loopback port 3000.
+run: frontend-tooling
+	$(UV) run --frozen --no-sync reflex run --env prod --backend-host 127.0.0.1
 
 test:
-	echo "No tests required"
+	$(UV) run --frozen --no-sync pytest
 
-all: install format lint
+lint:
+	$(UV) run --frozen --no-sync ruff check .
+	$(UV) run --frozen --no-sync ruff format --check .
+
+format:
+	$(UV) run --frozen --no-sync ruff format .
+
+check: lint test
+
+# Produces .web/build/client; the interactive app still needs the Python backend.
+build: frontend-tooling
+	$(UV) run --frozen --no-sync python scripts/frontend.py build

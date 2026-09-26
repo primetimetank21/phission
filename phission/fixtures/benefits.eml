@@ -1,0 +1,27 @@
+From: People Team <updates@benefits.example>
+To: Alex Morgan <alex@example.org>
+Subject: A small change to your benefits
+Date: Wed, 17 Jun 2026 14:10:00 +0000
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="benefits-alternative"
+
+--benefits-alternative
+Content-Type: text/plain; charset=utf-8
+
+Hi Alex,
+
+Your benefits preferences are ready to review. The HTML version of this message labels a button “Open the staff portal”.
+
+Before using any email button, compare its label with its actual destination in the link inspector below.
+
+The People Team
+--benefits-alternative
+Content-Type: text/html; charset=utf-8
+
+<html><head><title>Benefits update</title></head><body>
+<p>Hi Alex,</p>
+<p>Your benefits preferences are ready to review.</p>
+<p><a href="https://staff-benefits.test/review?team=people&amp;from=mail">Open the staff portal</a></p>
+<p>The People Team</p>
+</body></html>
+--benefits-alternative--
