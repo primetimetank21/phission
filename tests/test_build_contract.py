@@ -29,7 +29,8 @@ def test_build_preflight_fails_without_local_bun(tmp_path):
 
 def test_standard_commands_initialize_and_require_the_local_toolchain():
     makefile = (ROOT / "Makefile").read_text()
-    assert "reflex init --name phission --no-agents" in makefile
+    assert "python scripts/frontend.py setup" in makefile
+    assert "python scripts/frontend.py build" in makefile
     assert "export REFLEX_USE_NPM := false" in makefile
     assert "export REFLEX_USE_SYSTEM_BUN := false" in makefile
     assert "run: frontend-tooling" in makefile

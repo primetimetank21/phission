@@ -14,7 +14,7 @@ export REFLEX_USE_SYSTEM_BUN := false
 
 setup:
 	$(UV) sync --frozen
-	$(UV) run --frozen --no-sync reflex init --name phission --no-agents
+	$(UV) run --frozen --no-sync python scripts/frontend.py setup
 
 # Do not let Reflex silently fall back to npm and replace the Bun lock.
 frontend-tooling:
@@ -38,4 +38,4 @@ check: lint test
 
 # Produces .web/build/client; the interactive app still needs the Python backend.
 build: frontend-tooling
-	$(UV) run --frozen --no-sync reflex export --frontend-only --no-zip
+	$(UV) run --frozen --no-sync python scripts/frontend.py build

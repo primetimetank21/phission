@@ -27,8 +27,11 @@ jobs:
         with:
           version: "0.12.19"
           enable-cache: true
-      - name: Install locked dependencies
-        run: make setup
+      - name: Install locked dependencies without source drift
+        run: |
+          make setup
+          git diff --exit-code -- reflex.lock .gitignore
+          test -z "$(git status --porcelain --untracked-files=all -- reflex.lock)"
       - name: Lint, format check, and behavioral tests
         run: make check
       - name: Build production frontend with synthetic data only
