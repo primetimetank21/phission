@@ -1,0 +1,34 @@
+From: Parcel Desk <delivery@parcel.example>
+To: Alex Morgan <alex@example.org>
+Subject: An update on your delivery
+Date: Wed, 17 Jun 2026 11:20:00 +0000
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="parcel-mixed"
+
+--parcel-mixed
+Content-Type: multipart/alternative; boundary="parcel-text"
+
+--parcel-text
+Content-Type: text/plain; charset=utf-8
+
+Hi Alex,
+
+There’s a new delivery update. You can check the reference here:
+https://parcel.example/track/DEMO-204
+
+If you weren’t expecting a parcel, check directly with the shop using your original order confirmation.
+
+Parcel Desk
+--parcel-text
+Content-Type: text/html; charset=utf-8
+
+<p>Hi Alex,</p><p>There’s a new delivery update.</p>
+<a href="https://parcel.example/track/DEMO-204">Delivery reference</a>
+--parcel-text--
+--parcel-mixed
+Content-Type: application/octet-stream
+Content-Disposition: attachment; filename="demo-receipt.txt"
+Content-Transfer-Encoding: base64
+
+U3ludGhldGljIGF0dGFjaG1lbnQgb25seS4=
+--parcel-mixed--

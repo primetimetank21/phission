@@ -1,27 +1,72 @@
-name: Python Versions
+name: Demo checks
 
 on: [push, pull_request]
 
-jobs:
-  build:
+permissions:
+  contents: read
 
+jobs:
+  check:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        python-version: ["3.8", "3.9", "3.10"]
-
+        python-version: ["3.13", "3.14"]
+    env:
+      UV_PYTHON: ${{ matrix.python-version }}
+      UV_PYTHON_DOWNLOADS: never
+      UV_CACHE_DIR: ${{ github.workspace }}/.cache/uv
+      REFLEX_DIR: ${{ github.workspace }}/.cache/reflex
+      REFLEX_TELEMETRY_ENABLED: "false"
     steps:
-      - uses: actions/checkout@v3
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Install dependencies
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.12.19"
+          enable-cache: true
+      - name: Install locked dependencies
+        run: make setup
+      - name: Lint, format check, and behavioral tests
+        run: make check
+      - name: Build production frontend with synthetic data only
+        run: make build
+      - name: Verify frontend lock stability
         run: |
-          make install
-      - name: Lint
+          git diff --exit-code -- reflex.lock .gitignore
+          test -z "$(git status --porcelain --untracked-files=all -- reflex.lock)"
+      - uses: actions/setup-node@v4
+        if: matrix.python-version == '3.13'
+        with:
+          node-version: "22.23.2"
+          cache: npm
+      - name: Install browser-test tooling
+        if: matrix.python-version == '3.13'
         run: |
-          make lint
-      - name: Test
+          npm ci --ignore-scripts
+          npx playwright install --with-deps chromium
+      - name: Production browser and accessibility regressions
+        if: matrix.python-version == '3.13'
+        shell: bash
         run: |
-          make test
+          mkdir -p .scratch
+          setsid uv run --frozen --no-sync reflex run --env prod --backend-host 127.0.0.1 --frontend-port 3157 > .scratch/server.log 2>&1 &
+          server_pid=$!
+          trap 'kill -- -"$server_pid" 2>/dev/null || true' EXIT
+          curl --fail --silent --retry 30 --retry-connrefused --retry-delay 1 http://127.0.0.1:3157/ > /dev/null
+          kill -0 "$server_pid"
+          PHISSION_URL=http://127.0.0.1:3157 npm run test:browser
+          git diff --exit-code -- reflex.lock
+          test -z "$(git status --porcelain --untracked-files=all -- reflex.lock)"
+      - uses: actions/upload-artifact@v4
+        if: always() && matrix.python-version == '3.13'
+        with:
+          name: phission-browser-evidence
+          path: |
+            .scratch/browser-validation/
+            .scratch/server.log
+          include-hidden-files: true
+          if-no-files-found: ignore
+          retention-days: 30
